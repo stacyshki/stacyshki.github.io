@@ -1,103 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>RCK Research</title>
-		<link rel="icon" href="images/logo.jpg" type="image/x-icon" />
+		<title>С Днём Рождения нас!</title>
 		<link rel="stylesheet" href="styles.css" />
-		<script src="https://d3js.org/d3.v7.min.js"></script>
-		<script src="https://unpkg.com/topojson-client@3"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.3/simple-statistics.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.6/jstat.min.js"></script
+		<link rel="icon" href="media/favicon.ico" class="icon" />
+		<script src="script.js" defer></script>
 	</head>
 	<body>
-		<header>
-			<h1>
-				<a href="index.html"
-					><img
-						src="images/logo.jpg"
-						alt="logo"
-						style="width: 30px; height: 30px" /></a
-				>&ensp;Temperature Change
-			</h1>
-			<nav>
-				<ul>
-					<li><a href="index.html">Home</a></li>
-					<li><a href="team.html">Team</a></li>
-					<li><a href="data.html">Data</a></li>
-					<li><a href="contact.html">Contact</a></li>
-				</ul>
-			</nav>
-		</header>
-		<section id="interactive-section">
-			<div class="geo-map"></div>
-		</section>
-		<section id="problem-outline">
-			<h2>Problem outline</h2>
-			<p>The Earth is sending us signals, and these signals are hidden within the changes in global temperatures. Since the Industrial Revolution, the massive release of greenhouse gases from human activities has gradually altered the Earth's climate system, leading to a continuous rise in global temperatures and an increase in extreme weather events. These changes are not just fluctuations in numbers; they are profoundly impacting our lives, environment, and future.</p>
-			<p><b>Causes:</b> According to NASA, Water Vapour, Carbon dioxide(CO₂), Methane, Nitrous oxide, and Sulfur hexafluoride contribute to the greenhouse effect. Over the last century, human activities have increased concentrations of this natural greenhouse.</p>
-			<b>Effects:</b> Global climate change has already had observable effects on the environment. Glaciers have shrunk, ice on rivers and lakes is breaking up earlier, plant and animal ranges have shifted, and trees are flowering sooner. Effects that scientists had predicted in the past would result from global climate change: loss of sea ice accelerated sea-level rise and longer, more intense heat waves. Source: <cite><a href="https://science.nasa.gov/climate-change/effects/">NASA</a></cite>
-		</section>
-		<section id="comments">
-			<section id="simple-text"><h2>Diving deeper into the data</h2></section>
-			<div class="graph" id="graph1"></div>
-			<section id="simple-text">
-			<h3>Comment</h3>
-			<p>Since the 1960s, the global average temperature has continued to rise. By 2019, it was approximately 1.1°C higher than pre-industrial levels—we are approaching the 1.5°C threshold of the Paris Agreement at an alarming pace</p></section>
-			<div class="graph" id="graph2"></div>
-			<section id="simple-text"><h3>Comment</h3>
-			<p>This chart takes us on a journey through nearly 60 years of global temperature variability. While the line doesn’t shoot up or down dramatically, it tells us something important: even as the world gets warmer, the ups and downs in temperature haven’t gone wild—yet. But those small wobbles in the graph? They’re like whispers, hinting that something bigger might be shifting in our climate system. It’s a reminder that while the Earth’s temperature is rising, the story isn’t just about heat—it’s about how steady or shaky our climate is becoming. And that’s something we all need to pay attention to.</p></section>
-			<div class="graph" id="graph3"></div>
-			<section id="simple-text"><h3>Comment</h3>
-			<p>This chart shows unusual years in global temperature changes, like a "heartbeat" record of the Earth's climate system. Most years follow a relatively stable curve, but certain years suddenly deviate, forming noticeable outliers. These outliers are like the "accelerated heartbeat" of the climate system, reminding us that the Earth is undergoing extraordinary changes.</p></section>
-			<div class="graph" id="graph4"></div>
-			<section id="simple-text"><h3>Comment</h3>
-			<p>This chart shows the changes in temperature over time for areas around the world, like a "storybook" documenting the Earth's climate evolution. Each area's temperature curve tells a unique story—some show a steady rise, while others experience dramatic fluctuations. These changes are not just a collection of numbers; they reflect the profound impact of global warming on different regions.</p></section>
-			<div class="graph" id="final-graph"></div>
-		</section>
-		<section id="conclusion">
-			<h2>Conclusion</h2>
-			<p>Through these charts, we see a vivid story about the Earth's changing temperatures. From 1961 to 2019, global temperatures have continued to rise, and seasonal temperature fluctuations have also quietly shifted. Temperature changes in certain months are particularly noticeable, and the frequency of extreme weather events seems to be increasing as well. These changes are not just numbers; they are part of our lives, affecting our environment, agriculture, and daily routines.
-				Global warming is no longer a distant concept but a reality that each of us can feel. These charts remind us that the pace of climate change is accelerating, and we need to take action to address this challenge. Whether it's reducing carbon emissions or adapting to new climate realities, we all have a responsibility to contribute to the future of our planet.
-				Let us draw strength from this data and work together to create a more sustainable and livable world for the next generation. The story of global warming continues, and each of us can play a positive role in it.
+		<div class="loading-screen" id="loading-screen">
+			<div class="loading-content">
+				<p class="brand">ОНКОЛОГИКА</p>
+				<p class="cancer-warn">
+					Рак - не личная трагедия.<br />
+					Это задача, которую можно решить.
 				</p>
-		</section>
-		<section id="other-graphs">
-			<section id="simple-text"><h2>Other useful graphs</h2></section>
-			
-			<div class="container-other-graphs">
-        <!-- Sidebar: List of Charts -->
-        <div class="sidebar">
-						<div class="chart-thumbnail" onclick="updateChart('graph10')">Trend of temperature change (radar)</div>
-            <div class="chart-thumbnail" onclick="updateChart('graph5')">Seasonal temperature change</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph13')">Seasonal temperature boxplots</div>
-            <div class="chart-thumbnail" onclick="updateChart('graph6')">Seasonal deviation change</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph14')">Seasonal deviation boxplots</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph7')">Average temperature bar chart</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph15')">Hottest areas</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph9')">Temperature change among areas</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph8')">Deviation with respect to temperature</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph11')">Deviation change among areas</div>
-						<div class="chart-thumbnail" onclick="updateChart('graph12')">3D visualization of temperature with respect to deviation within years</div>
-        </div>
-        <!-- Main area: Where the selected graph is displayed -->
-        <div class="chart-display">
-            <div id="graph5" class="chart-container"></div>
-            <div id="graph6" class="chart-container"></div>
-						<div id="graph7" class="chart-container"></div>
-						<div id="graph8" class="chart-container"></div>
-            <div id="graph9" class="chart-container"></div>
-						<div id="graph10" class="chart-container"></div>
-						<div id="graph11" class="chart-container"></div>
-            <div id="graph12" class="chart-container"></div>
-						<div id="graph13" class="chart-container"></div>
-						<div id="graph14" class="chart-container"></div>
-            <div id="graph15" class="chart-container"></div>
-        </div>
-    </div>
+				<p class="brand-desc">
+					6 лет мы помогаем взрослым онкопациентам и их близким
+				</p>
+				<p class="wait">Секунду, подгружаем для вас важное...</p>
+				<span id="loading-percentage">0%</span>
+			</div>
 		</div>
-		</section>
-		<script src="script.js" defer></script>
+		<div class="container">
+			<img class="tree" src="media/main_page.svg" alt="Фон" />
+			<div class="orange" id="orange1" data-modal="orange1-modal">
+				<img src="media/orange.svg" alt="Апельсин 1" />
+			</div>
+			<div class="orange" id="orange2" data-modal="orange2-modal">
+				<img src="media/orange.svg" alt="Апельсин 2" />
+			</div>
+			<div class="orange" id="orange3" data-modal="orange3-modal">
+				<img src="media/orange.svg" alt="Апельсин 3" />
+			</div>
+			<div class="orange" id="orange4">
+				<img src="media/orange.svg" alt="Апельсин 4" />
+				<div class="hover-text">Нажми на меня!</div>
+			</div>
+			<div class="orange" id="orange5">
+				<img src="media/orange.svg" alt="Апельсин 5" />
+				<div class="hover-text">Нажми на меня!</div>
+			</div>
+			<div class="orange" id="orange6">
+				<img src="media/orange.svg" alt="Апельсин 6" />
+				<div class="hover-text">Нажми на меня!</div>
+			</div>
+
+			<div class="caterpillar">
+				<img src="media/caterpillar.svg" alt="Гусеница" />
+				<div class="caterpillar-modal">
+					<p>Привет! Как дела?<br />Если вдруг тебе нужна помощь, обращайся</p>
+					<button id="call-button">8 800 350 57 85</button>
+				</div>
+			</div>
+			<div class="bird">
+				<img src="media/bird.svg" alt="Птичка" />
+				<div class="bird-modal">
+					<p>Выбери открытку!</p>
+					<button id="open-cards-button">Посмотреть открытки</button>
+				</div>
+			</div>
+			<button id="help-button" aria-label="Help"></button>
+			<div class="pinata-area">
+				<img
+					class="pinata"
+					id="pinata"
+					src="media/pinata.svg"
+					alt="Пиньята"
+					draggable="false"
+				/>
+				<canvas class="confetti" id="confetti"></canvas>
+			</div>
+			<div class="sign-area">
+				<img src="media/6yo_sign.svg" alt="Вывеска 6 лет" class="sixyo-sign" />
+			</div>
+			<audio id="background-audio" loop>
+				<source src="media/sound.mp3" type="audio/mpeg" />
+				<source src="media/sound.ogg" type="audio/ogg" />
+				Ваш браузер не поддерживает аудио.
+			</audio>
+			<button id="audio-toggle" aria-label="Toggle Sound"></button>
+		</div>
+		<div class="popup-backdrop" id="popup-backdrop" style="display: none">
+			<div class="popup">
+				<img class="popup-pinata" src="media/popup-pinata.svg" alt="Пиньята" />
+				<h2>Лови подарок!</h2>
+				<p></p>
+			</div>
+		</div>
+		<div class="card-selection" id="card-selection" style="display: none">
+			<div class="card-selection-content">
+				<span class="close" id="close-card-selection">
+					<img src="media/close-icon.svg" alt="Закрыть" />
+				</span>
+				<h2>Выбери открытку</h2>
+				<div class="cards">
+					<div class="card" data-card="card.svg">
+						<img src="media/card.svg" alt="Карточка 1" />
+					</div>
+					<div class="card" data-card="card_2.svg">
+						<img src="media/card_2.svg" alt="Карточка 2" />
+					</div>
+					<div class="card" data-card="card_3.svg">
+						<img src="media/card_3.svg" alt="Карточка 3" />
+					</div>
+					<div class="card" data-card="card_4.svg">
+						<img src="media/card_4.svg" alt="Карточка 4" />
+					</div>
+				</div>
+				<button id="download-selected-card" disabled>
+					Скачать выбранную открытку
+				</button>
+			</div>
+		</div>
+		<div id="orientation-prompt">
+			<p>
+				Пожалуйста, поверните устройство в горизонтальный режим для лучшего
+				опыта!
+			</p>
+		</div>
+		<!-- Modals orange -->
+		<div class="orange-modal" id="orange1-modal">
+			<p>Это кастомное модальное окно для Апельсина 1!</p>
+			<button class="close-modal">Закрыть</button>
+		</div>
+		<div class="orange-modal" id="orange2-modal">
+			<p>Это кастомное модальное окно для Апельсина 2!</p>
+			<button class="close-modal">Закрыть</button>
+		</div>
+		<div class="orange-modal" id="orange3-modal"></div>
 	</body>
 </html>
