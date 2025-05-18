@@ -40,9 +40,19 @@ function launchConfetti() {
 	const canvas = document.getElementById('confetti')
 	const ctx = canvas.getContext('2d')
 
+	const pinataArea = document.querySelector('.pinata-area')
+	canvas.width = pinataArea.offsetWidth
+	canvas.height = pinataArea.offsetHeight
+
 	const pinataRect = pinata.getBoundingClientRect()
-	const pinataCenterX = pinataRect.left + pinataRect.width / 2
-	const pinataCenterY = pinataRect.top + pinataRect.height / 2
+	const pinataCenterX =
+		pinataRect.left -
+		pinataArea.getBoundingClientRect().left +
+		pinataRect.width / 2
+	const pinataCenterY =
+		pinataRect.top -
+		pinataArea.getBoundingClientRect().top +
+		pinataRect.height / 2
 
 	const confettiImages = []
 	for (let i = 1; i <= 9; i++) {
@@ -57,8 +67,8 @@ function launchConfetti() {
 
 	for (let i = 0; i < confettiCount; i++) {
 		allConfetti.push({
-			x: pinataCenterX - canvas.offsetLeft, // Align with pinata
-			y: pinataCenterY - canvas.offsetTop, // Align with pinata
+			x: pinataCenterX, // Align with pinata
+			y: pinataCenterY, // Align with pinata
 			size: randomBetween(30, 50), // Increase size
 			angle: randomBetween(0, 2 * Math.PI),
 			speed: randomBetween(1, 3),
@@ -159,12 +169,12 @@ if (pinata) {
 
 		if (clickCount === 1) {
 			const hintElement = document.createElement('div')
-			hintElement.textContent = 'Keep clicking to break the pinata!'
+			hintElement.textContent = 'Продолжай нажимать, чтобы сломать пинату!'
 			hintElement.style.position = 'absolute'
 			hintElement.style.top = '10px'
 			hintElement.style.left = '50%'
 			hintElement.style.transform = 'translateX(-50%)'
-			hintElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'
+			hintElement.style.backgroundColor = '#f2994a'
 			hintElement.style.color = 'white'
 			hintElement.style.padding = '5px'
 			hintElement.style.borderRadius = '5px'
@@ -288,10 +298,16 @@ document.addEventListener('DOMContentLoaded', () => {
 	const orangeImage = new Image()
 	orangeImage.src = 'media/orange.svg'
 
+	const modalWinImage = new Image()
+	modalWinImage.src = 'media/modal_win.svg'
+
 	const helpButton = document.getElementById('help-button')
 	if (helpButton) {
 		helpButton.addEventListener('click', () => {
-			window.scrollTo(0, document.body.scrollHeight)
+			window.scrollTo({
+				top: document.body.scrollHeight,
+				behavior: 'smooth',
+			})
 		})
 	} else {
 		console.error('Help button not found')
@@ -517,7 +533,7 @@ document.getElementById('call-button').addEventListener('click', () => {
 		window.location.href = 'tel:88003505785'
 	} else {
 		navigator.clipboard.writeText('88003505785').then(() => {
-			alert('Phone number copied to clipboard')
+			alert('Номер телефона скопирован в буфер обмена!')
 		})
 	}
 })
@@ -616,11 +632,8 @@ document.querySelectorAll('.orange').forEach(orange => {
 	const modalId = orange.getAttribute('data-modal')
 	const modal = document.getElementById(modalId)
 	if (modal) {
-		orange.addEventListener('mouseenter', function () {
-			modal.classList.add('active')
-		})
-		orange.addEventListener('mouseleave', function () {
-			modal.classList.remove('active')
+		orange.addEventListener('click', function () {
+			modal.classList.toggle('active')
 		})
 	}
 })
@@ -628,5 +641,49 @@ document.querySelectorAll('.orange').forEach(orange => {
 document.querySelectorAll('.close-modal').forEach(button => {
 	button.addEventListener('click', function () {
 		this.parentElement.classList.remove('active')
+	})
+})
+
+document.getElementById('learn-more').addEventListener('click', () => {
+	document.getElementById('orange1-modal-more').style.display = 'flex'
+})
+
+document
+	.getElementById('close-orange1-modal-more')
+	.addEventListener('click', () => {
+		document.getElementById('orange1-modal-more').style.display = 'none'
+	})
+
+document.addEventListener('DOMContentLoaded', () => {
+	document.querySelectorAll('.team-help-button').forEach(btn => {
+		btn.addEventListener('click', function () {
+			document.querySelectorAll('.orange-modal.active').forEach(modal => {
+				modal.classList.remove('active')
+			})
+
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.body.scrollHeight,
+					behavior: 'smooth',
+				})
+			}, 200)
+		})
+	})
+
+	document.querySelectorAll('.team-help-button-more').forEach(btn => {
+		btn.addEventListener('click', function () {
+			document.querySelectorAll('.orange-modal.active').forEach(modal => {
+				modal.classList.remove('active')
+			})
+
+			document.getElementById('close-orange1-modal-more').click()
+
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.body.scrollHeight,
+					behavior: 'smooth',
+				})
+			}, 200)
+		})
 	})
 })
