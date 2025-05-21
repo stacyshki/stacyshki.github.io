@@ -522,6 +522,11 @@ canvas {
 	top: 30%;
 }
 
+#orange8 {
+	right: 25%;
+	top: 25%;
+}
+
 #orange1-modal {
 	position: fixed; /* обязательно, чтобы внутри позиционировать кнопки */
 	background: url('media/modal-window.svg') no-repeat center center;
@@ -816,6 +821,115 @@ canvas {
 
 .orange7-modal-content button.save-btn:hover {
 	background-color: #f1a85d;
+}
+
+#orange8-modal {
+	background: url('media/modal-window.svg') no-repeat center center;
+	background-size: cover;
+	width: 50rem;
+	height: 37rem;
+	top: 5%;
+}
+
+#orange8-modal h2 {
+	margin-top: 0;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 700;
+	line-height: 100%;
+	font-size: 2vw;
+	margin-top: 1rem;
+	text-align: center;
+}
+
+#orange8-modal .wheel-wrapper {
+	position: relative;
+	width: 25rem;
+	height: 25rem;
+	margin: 0 auto;
+}
+
+#orange8-modal #wheel {
+	width: 100%;
+	height: 100%;
+	transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+	transform: rotate(0deg);
+}
+
+#orange8-modal .pointer {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	width: 0;
+	height: 0;
+	transform: rotate(-90deg);
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 30px solid red;
+	z-index: 10;
+}
+
+#orange8-modal #spinBtn,
+#orange8-modal #openSharePopup {
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
+	font-size: 18px;
+	background-color: orange;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	color: #2e2c24;
+}
+
+#orange8-modal #resultText {
+	margin-top: 20px;
+	font-size: 20px;
+}
+
+#orange8-modal .result-text {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	min-height: 30px;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 700;
+	line-height: 130%;
+	font-size: 2vw;
+	color: #f1a85d;
+	text-align: center;
+}
+
+#orange8-modal .share-popup {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#orange8-modal .share-popup.hidden {
+	display: none;
+}
+
+#orange8-modal .share-popup-content {
+	background: #faf9f8;
+	padding: 20px 30px;
+	border-radius: 10px;
+	text-align: center;
+	position: relative;
+}
+
+#orange8-modal.share-buttons a {
+	display: inline-block;
+	margin: 10px;
+	padding: 10px 14px;
+	border-radius: 6px;
+	text-decoration: none;
 }
 
 /* Caterpillar and bird styles */

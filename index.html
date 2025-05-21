@@ -47,6 +47,9 @@
 			<div class="orange" id="orange7" data-modal="orange7-modal">
 				<img src="media/orange.svg" alt="Апельсин 7" />
 			</div>
+			<div class="orange" id="orange8" data-modal="orange8-modal">
+				<img src="media/orange.svg" alt="Апельсин 8" />
+			</div>
 
 			<div class="caterpillar">
 				<img src="media/caterpillar.svg" alt="Гусеница" />
@@ -248,6 +251,39 @@
 
 				<button class="save-btn" onclick="saveDrawing()">Сохранить</button>
 				<button class="save-btn" onclick="clearCanvas()">Очистить</button>
+			</div>
+		</div>
+		<div class="orange-modal" id="orange8-modal">
+			<span class="close-modal">
+				<img src="media/close-icon.svg" alt="Закрыть"
+			/></span>
+			<h2>Колесо добрых дел</h2>
+
+			<div id="resultText" class="result-text"></div>
+
+			<div class="wheel-wrapper">
+				<img id="wheel" src="media/wheel.png" alt="Колесо" />
+				<div class="pointer"></div>
+			</div>
+
+			<button id="spinBtn">Крутить</button>
+			<button id="openSharePopup" style="display: none">Поделиться</button>
+
+			<div id="sharePopup" class="share-popup hidden">
+				<div class="share-popup-content">
+					<p>Поделиться в:</p>
+					<div class="share-buttons">
+						<a id="tgLink" target="_blank"
+							><img src="media/telegram.svg" alt="Телеграм"
+						/></a>
+						<a id="vkLink" target="_blank"
+							><img src="media/vk.svg" alt="ВКонтакте"
+						/></a>
+						<a id="waLink" target="_blank"
+							><img src="media/whatsapp.svg" alt="Вотсап"
+						/></a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>

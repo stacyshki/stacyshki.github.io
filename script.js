@@ -744,6 +744,8 @@ document
 	.addEventListener('click', () => {
 		document.getElementById('orange1-modal-more').style.display = 'none'
 	})
+
+// Game 1: Paint
 ;(function () {
 	const canvas = document.getElementById('orangeCanvas')
 	const ctx = canvas.getContext('2d')
@@ -850,3 +852,77 @@ document
 		drawBase()
 	}
 })()
+
+// Game 2: Roulette
+const sectors = [
+	'Подари улыбку',
+	'Позвони бабушке',
+	'Помоги другу',
+	'Поделись конфетой',
+	'Убери комнату',
+	'Напиши открытку',
+	'Обними маму',
+	'Скажи спасибо',
+]
+
+let currentRotation = 0
+
+document.addEventListener('DOMContentLoaded', () => {
+	const wheel = document.getElementById('wheel')
+	const spinBtn = document.getElementById('spinBtn')
+	const resultText = document.getElementById('resultText')
+
+	spinBtn.addEventListener('click', () => {
+		const sectorCount = sectors.length
+		const randomSector = Math.floor(Math.random() * sectorCount)
+		const sectorAngle = 360 / sectorCount
+		const stopAngle = randomSector * sectorAngle
+
+		const spins = 5
+		const targetRotation = currentRotation + 360 * spins + (360 - stopAngle)
+		currentRotation = targetRotation % 360
+
+		wheel.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)'
+		wheel.style.transform = `rotate(${targetRotation}deg)`
+
+		resultText.textContent = ''
+		openSharePopup.style.display = 'none'
+
+		const result = sectors[randomSector]
+
+		setTimeout(() => {
+			resultText.textContent = `Выпало: ${result}`
+			openSharePopup.style.display = 'inline-block'
+
+			const text = `Я выбрал из колеса добрых дел: ${result} 😊`
+			const url = location.href
+
+			tgLink.href = `https://t.me/share/url?url=${encodeURIComponent(
+				url
+			)}&text=${encodeURIComponent(text)}`
+			vkLink.href = `https://vk.com/share.php?url=${encodeURIComponent(
+				url
+			)}&title=${encodeURIComponent(text)}`
+			waLink.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+				text + ' ' + url
+			)}`
+		}, 250)
+	})
+})
+
+const openSharePopup = document.getElementById('openSharePopup')
+const sharePopup = document.getElementById('sharePopup')
+
+const tgLink = document.getElementById('tgLink')
+const vkLink = document.getElementById('vkLink')
+const waLink = document.getElementById('waLink')
+
+openSharePopup.addEventListener('click', () => {
+	sharePopup.classList.remove('hidden')
+})
+
+window.addEventListener('click', e => {
+	if (e.target === sharePopup) {
+		sharePopup.classList.add('hidden')
+	}
+})
