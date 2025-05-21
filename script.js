@@ -1,3 +1,134 @@
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+	const confettiManager = new ConfettiManager()
+	const pinataManager = new PinataManager(confettiManager)
+
+	// Handle loading screen
+	const imgPromises = Array.from(document.images)
+		.filter(img => !img.complete)
+		.map(
+			img =>
+				new Promise(resolve => {
+					img.onload = img.onerror = resolve
+				})
+		)
+
+	const bgUrls = extractBackgroundUrls()
+	const bgPromises = bgUrls.map(loadImage)
+
+	Promise.all([...imgPromises, ...bgPromises]).then(() => {
+		clearInterval(loadingInterval)
+		loadingPercentage = 100
+		loadingElement.textContent = '100%'
+
+		loadingScreen.style.animation = 'slideUp 0.5s forwards'
+		setTimeout(() => {
+			loadingScreen.style.display = 'none'
+			container.style.display = 'flex'
+		}, 500)
+	})
+
+	document.getElementById('orange5').addEventListener('click', function () {
+		this.classList.remove('clicked')
+		void this.offsetWidth // Trigger reflow
+		this.classList.add('clicked')
+	})
+	document.getElementById('orange4').addEventListener('click', function () {
+		this.classList.remove('clicked')
+		void this.offsetWidth
+		this.classList.add('clicked')
+	})
+
+	document.getElementById('orange6').addEventListener('click', function () {
+		this.classList.remove('clicked')
+		void this.offsetWidth
+		this.classList.add('clicked')
+	})
+
+	const helpButton = document.getElementById('help-button')
+	if (helpButton) {
+		helpButton.addEventListener('click', () => {
+			window.scrollTo({
+				top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
+				behavior: 'smooth',
+			})
+		})
+	} else {
+		console.error('Help button not found')
+	}
+
+	const audio = document.getElementById('background-audio')
+	const audioToggle = document.getElementById('audio-toggle')
+
+	audioToggle.addEventListener('click', () => {
+		if (audio.paused) {
+			audio.play()
+		} else {
+			audio.pause()
+		}
+	})
+
+	document.querySelectorAll('.team-help-button').forEach(btn => {
+		btn.addEventListener('click', function () {
+			document.querySelectorAll('.orange-modal.active').forEach(modal => {
+				modal.classList.remove('active')
+			})
+
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
+					behavior: 'smooth',
+				})
+			}, 200)
+		})
+	})
+
+	document.querySelectorAll('.team-help-button-more').forEach(btn => {
+		btn.addEventListener('click', function () {
+			document.querySelectorAll('.orange-modal.active').forEach(modal => {
+				modal.classList.remove('active')
+			})
+
+			document.getElementById('close-orange1-modal-more').click()
+
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
+					behavior: 'smooth',
+				})
+			}, 200)
+		})
+	})
+
+	const pairs = [
+		{ trigger: '.caterpillar', modal: '.caterpillar-modal' },
+		{ trigger: '.bird', modal: '.bird-modal' },
+	]
+
+	pairs.forEach(({ trigger, modal }) => {
+		const triggerEl = document.querySelector(trigger)
+		const modalEl = document.querySelector(modal)
+
+		if (triggerEl && modalEl) {
+			triggerEl.addEventListener('click', function (e) {
+				e.stopPropagation()
+				modalEl.style.display = 'block'
+			})
+
+			modalEl.addEventListener('click', function (e) {
+				e.stopPropagation()
+			})
+		}
+	})
+
+	document.addEventListener('click', function () {
+		pairs.forEach(({ modal }) => {
+			const modalEl = document.querySelector(modal)
+			if (modalEl) modalEl.style.display = 'none'
+		})
+	})
+})
+
 // Confetti
 function randomBetween(a, b) {
 	return a + Math.random() * (b - a)
@@ -67,13 +198,13 @@ function launchConfetti() {
 
 	for (let i = 0; i < confettiCount; i++) {
 		allConfetti.push({
-			x: pinataCenterX, // Align with pinata
-			y: pinataCenterY, // Align with pinata
-			size: randomBetween(30, 50), // Increase size
+			x: pinataCenterX,
+			y: pinataCenterY,
+			size: randomBetween(30, 50),
 			angle: randomBetween(0, 2 * Math.PI),
 			speed: randomBetween(1, 3),
-			dx: randomBetween(-3, 3), // Increase spread
-			dy: randomBetween(-5, -3), // Increase spread
+			dx: randomBetween(-3, 3),
+			dy: randomBetween(-5, -3),
 			gravity: randomBetween(0.05, 0.1),
 			rotation: randomBetween(0, 2 * Math.PI),
 			rotationSpeed: randomBetween(-0.1, 0.1),
@@ -100,33 +231,41 @@ const pinataImages = {
 pinataImages.default.src = 'media/pinata.svg'
 pinataImages.hover.src = 'media/pinata-hover.svg'
 
-function handlePinataMouseEnter(e) {
+function handlePinataInteraction(e) {
 	pinata.src = pinataImages.hover.src
+
 	const currentRotation = getCurrentRotation(pinata)
 	const pinataRect = pinata.getBoundingClientRect()
-	const mouseX = e.clientX
+
+	const interactionX = e.type.startsWith('touch')
+		? e.touches[0].clientX
+		: e.clientX
 	const pinataCenterX = pinataRect.left + pinataRect.width / 2
 
 	pinata.style.setProperty('--current-rotation', `${currentRotation}deg`)
 	pinata.classList.remove('pinata-shake-left', 'pinata-shake-right')
 	void pinata.offsetWidth // Force reflow
 
-	if (mouseX > pinataCenterX) {
+	if (interactionX > pinataCenterX) {
 		pinata.classList.add('pinata-shake-right')
 	} else {
 		pinata.classList.add('pinata-shake-left')
 	}
 }
 
-function handlePinataMouseLeave() {
+function resetPinata() {
 	pinata.src = pinataImages.default.src
+	pinata.classList.remove('pinata-shake-left', 'pinata-shake-right')
 }
 
 // Update pinata event listeners
 if (pinata) {
 	pinata.src = pinataImages.default.src
-	pinata.addEventListener('mouseenter', handlePinataMouseEnter)
-	pinata.addEventListener('mouseleave', handlePinataMouseLeave)
+	pinata.addEventListener('mouseenter', handlePinataInteraction)
+	pinata.addEventListener('mouseleave', resetPinata)
+
+	pinata.addEventListener('touchstart', handlePinataInteraction)
+	pinata.addEventListener('touchend', resetPinata)
 	pinata.addEventListener('click', () => {
 		if (popupShown) return
 
@@ -171,7 +310,7 @@ if (pinata) {
 			const hintElement = document.createElement('div')
 			hintElement.textContent = 'Продолжай нажимать, чтобы сломать пинату!'
 			hintElement.style.position = 'absolute'
-			hintElement.style.top = '10px'
+			hintElement.style.top = '5%'
 			hintElement.style.left = '50%'
 			hintElement.style.transform = 'translateX(-50%)'
 			hintElement.style.backgroundColor = '#f2994a'
@@ -207,10 +346,10 @@ function showPopup() {
 	popupShown = true
 	const promo = getRandomPromoCode()
 	const promoElement = document.createElement('div')
-	promoElement.innerHTML = `<strong>${promo.company}</strong>: <span style="text-decoration: underline; color: blue; cursor: pointer;">${promo.code}</span>`
+	promoElement.innerHTML = `<strong>${promo.company}</strong>: <span style="text-decoration: underline; color: #2e2c24; cursor: pointer;">${promo.code}</span>`
 	promoElement.addEventListener('click', () => {
 		navigator.clipboard.writeText(promo.code).then(() => {
-			alert('Promo code copied to clipboard!')
+			alert('Промокод скопирован в буфер обмена!')
 		})
 	})
 	const popup = document.getElementById('popup-backdrop')
@@ -238,92 +377,6 @@ document
 			confettiManager.animate()
 		}
 	})
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-	const confettiManager = new ConfettiManager()
-	const pinataManager = new PinataManager(confettiManager)
-
-	// Handle loading screen
-	const loadingScreen = document.getElementById('loading-screen')
-	const container = document.querySelector('.container')
-
-	loadingScreen.style.animation = 'slideUp 0.5s forwards'
-	setTimeout(() => {
-		loadingScreen.style.display = 'none'
-		container.style.display = 'flex'
-	}, 10000)
-
-	let loadingPercentage = 0
-	const loadingInterval = setInterval(() => {
-		if (loadingPercentage < 100) {
-			loadingPercentage += 1
-			document.getElementById(
-				'loading-percentage'
-			).textContent = `${loadingPercentage}%`
-		} else {
-			clearInterval(loadingInterval)
-		}
-	}, 80)
-
-	document.getElementById('orange5').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth // Trigger reflow
-		this.classList.add('clicked')
-	})
-	document.getElementById('orange4').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth // Trigger reflow
-		this.classList.add('clicked')
-	})
-
-	document.getElementById('orange6').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth // Trigger reflow
-		this.classList.add('clicked')
-	})
-
-	const hedgehogImage = new Image()
-	hedgehogImage.src = 'media/hedgehog/hedgehog.svg'
-
-	const peel1Image = new Image()
-	peel1Image.src = 'media/peeling/peel1.svg'
-
-	const peel2Image = new Image()
-	peel2Image.src = 'media/peeling/peel2.svg'
-
-	const peel3Image = new Image()
-	peel3Image.src = 'media/peeling/peel3.svg'
-
-	const orangeImage = new Image()
-	orangeImage.src = 'media/orange.svg'
-
-	const modalWinImage = new Image()
-	modalWinImage.src = 'media/modal_win.svg'
-
-	const helpButton = document.getElementById('help-button')
-	if (helpButton) {
-		helpButton.addEventListener('click', () => {
-			window.scrollTo({
-				top: document.body.scrollHeight,
-				behavior: 'smooth',
-			})
-		})
-	} else {
-		console.error('Help button not found')
-	}
-
-	const audio = document.getElementById('background-audio')
-	const audioToggle = document.getElementById('audio-toggle')
-
-	audioToggle.addEventListener('click', () => {
-		if (audio.paused) {
-			audio.play()
-		} else {
-			audio.pause()
-		}
-	})
-})
 
 class PinataManager {
 	constructor(confettiManager) {
@@ -479,8 +532,8 @@ class ConfettiManager {
 
 		for (let i = 0; i < confettiCount; i++) {
 			this.confetti.push({
-				x: pinataCenterX - this.canvas.offsetLeft, // Align with pinata
-				y: pinataCenterY - this.canvas.offsetTop, // Align with pinata
+				x: pinataCenterX - this.canvas.offsetLeft,
+				y: pinataCenterY - this.canvas.offsetTop,
 				size: randomBetween(20, 40),
 				angle: randomBetween(0, 2 * Math.PI),
 				speed: randomBetween(1, 3),
@@ -506,6 +559,46 @@ class ConfettiManager {
 			this.animationFrameId = null
 		}
 	}
+}
+
+// Loading screen
+let loadingPercentage = 0
+const loadingElement = document.getElementById('loading-percentage')
+const container = document.querySelector('.container')
+
+const loadingInterval = setInterval(() => {
+	if (loadingPercentage < 99) {
+		loadingPercentage += 1
+		loadingElement.textContent = `${loadingPercentage}%`
+	}
+}, 50)
+
+function loadImage(url) {
+	return new Promise(resolve => {
+		const img = new Image()
+		img.onload = img.onerror = resolve
+		img.src = url
+	})
+}
+
+function extractBackgroundUrls() {
+	const urls = new Set()
+
+	document.querySelectorAll('*').forEach(el => {
+		const style = getComputedStyle(el)
+		const bg = style.getPropertyValue('background-image')
+
+		if (bg && bg !== 'none') {
+			const matches = [...bg.matchAll(/url\(["']?(.*?)["']?\)/g)]
+			matches.forEach(match => {
+				if (match[1]) {
+					urls.add(match[1])
+				}
+			})
+		}
+	})
+
+	return Array.from(urls)
 }
 
 window.addEventListener('load', () => {
@@ -598,7 +691,6 @@ function debounce(func, wait) {
 	}
 }
 
-// Function to check orientation and display a prompt
 function checkOrientation() {
 	const isPortrait = window.matchMedia('(orientation: portrait)').matches
 	const orientationPrompt = document.getElementById('orientation-prompt')
@@ -613,10 +705,8 @@ function checkOrientation() {
 // Add a debounced event listener for orientation changes
 window.addEventListener('orientationchange', debounce(checkOrientation, 200))
 
-// Initial check on page load
 document.addEventListener('DOMContentLoaded', checkOrientation)
 
-// Function to get the current rotation angle of an element
 function getCurrentRotation(element) {
 	const rotation = getComputedStyle(element).transform
 	if (rotation !== 'none') {
@@ -640,7 +730,8 @@ document.querySelectorAll('.orange').forEach(orange => {
 
 document.querySelectorAll('.close-modal').forEach(button => {
 	button.addEventListener('click', function () {
-		this.parentElement.classList.remove('active')
+		const modal = this.closest('.orange-modal')
+		if (modal) modal.classList.remove('active')
 	})
 })
 
@@ -653,37 +744,109 @@ document
 	.addEventListener('click', () => {
 		document.getElementById('orange1-modal-more').style.display = 'none'
 	})
+;(function () {
+	const canvas = document.getElementById('orangeCanvas')
+	const ctx = canvas.getContext('2d')
 
-document.addEventListener('DOMContentLoaded', () => {
-	document.querySelectorAll('.team-help-button').forEach(btn => {
-		btn.addEventListener('click', function () {
-			document.querySelectorAll('.orange-modal.active').forEach(modal => {
-				modal.classList.remove('active')
-			})
+	const centerX = canvas.width / 2
+	const centerY = canvas.height / 2
+	const radius = Math.min(canvas.width, canvas.height) / 2
 
-			setTimeout(() => {
-				window.scrollTo({
-					top: document.body.scrollHeight,
-					behavior: 'smooth',
-				})
-			}, 200)
+	let drawing = false
+	let currentColor = 'orange'
+
+	const orangeImg = new Image()
+	orangeImg.src = 'media/color_orange.svg'
+
+	orangeImg.onload = () => {
+		drawBase()
+	}
+
+	function drawBase() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		ctx.drawImage(
+			orangeImg,
+			centerX - radius,
+			centerY - radius,
+			radius * 2,
+			radius * 2
+		)
+	}
+
+	document.querySelectorAll('.color-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			currentColor = btn.getAttribute('data-color')
 		})
 	})
 
-	document.querySelectorAll('.team-help-button-more').forEach(btn => {
-		btn.addEventListener('click', function () {
-			document.querySelectorAll('.orange-modal.active').forEach(modal => {
-				modal.classList.remove('active')
-			})
+	// Mouse events
+	canvas.addEventListener('mousedown', () => (drawing = true))
+	canvas.addEventListener('mouseup', () => (drawing = false))
+	canvas.addEventListener('mouseleave', () => (drawing = false))
 
-			document.getElementById('close-orange1-modal-more').click()
+	// Touch events - prevent default to stop scrolling
+	canvas.addEventListener('touchstart', handleTouchStart, { passive: false })
+	canvas.addEventListener('touchend', handleTouchEnd, { passive: false })
+	canvas.addEventListener('touchmove', handleTouchMove, { passive: false })
 
-			setTimeout(() => {
-				window.scrollTo({
-					top: document.body.scrollHeight,
-					behavior: 'smooth',
-				})
-			}, 200)
-		})
+	function handleTouchStart(e) {
+		e.preventDefault()
+		drawing = true
+		const pos = getTouchPos(e)
+		handleDraw(pos)
+	}
+
+	function handleTouchEnd(e) {
+		e.preventDefault()
+		drawing = false
+	}
+
+	function handleTouchMove(e) {
+		if (!drawing) return
+		e.preventDefault()
+		const pos = getTouchPos(e)
+		handleDraw(pos)
+	}
+
+	function getTouchPos(e) {
+		const rect = canvas.getBoundingClientRect()
+		return {
+			x: e.touches[0].clientX - rect.left,
+			y: e.touches[0].clientY - rect.top,
+		}
+	}
+
+	function handleDraw(pos) {
+		const x = pos.x
+		const y = pos.y
+
+		const dx = x - centerX
+		const dy = y - centerY
+		if (dx * dx + dy * dy <= radius * radius) {
+			ctx.fillStyle = currentColor
+			ctx.beginPath()
+			ctx.arc(x, y, 5, 0, Math.PI * 2)
+			ctx.fill()
+		}
+	}
+
+	canvas.addEventListener('mousemove', e => {
+		if (!drawing) return
+
+		const rect = canvas.getBoundingClientRect()
+		const x = e.clientX - rect.left
+		const y = e.clientY - rect.top
+		handleDraw({ x, y })
 	})
-})
+
+	window.saveDrawing = function () {
+		const link = document.createElement('a')
+		link.download = 'orange.png'
+		link.href = canvas.toDataURL()
+		link.click()
+	}
+
+	window.clearCanvas = function () {
+		drawBase()
+	}
+})()

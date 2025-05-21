@@ -6,6 +6,7 @@
 		<title>С Днём Рождения нас!</title>
 		<link rel="stylesheet" href="styles.css" />
 		<link rel="icon" href="media/favicon.ico" class="icon" />
+		<link rel="preload" as="image" href="media/loading_bg.png" />
 		<script src="script.js" defer></script>
 	</head>
 	<body>
@@ -42,6 +43,9 @@
 			</div>
 			<div class="orange" id="orange6">
 				<img src="media/orange.svg" alt="Апельсин 6" />
+			</div>
+			<div class="orange" id="orange7" data-modal="orange7-modal">
+				<img src="media/orange.svg" alt="Апельсин 7" />
 			</div>
 
 			<div class="caterpillar">
@@ -125,26 +129,38 @@
 			<h2>Уже собрали на помощь</h2>
 			<p>Вставить сюда iFrame</p>
 			<div class="buttons-wrapper">
-			<button class="team-help-button">Хочу помочь</button>
-			<button id="learn-more">Подробнее о сборе</button>
+				<button class="team-help-button">Хочу помочь</button>
+				<button id="learn-more">Подробнее о сборе</button>
+			</div>
 		</div>
-		</div>
-		<div class="orange1-modal-more" id='orange1-modal-more' style="display: none">
+		<div
+			class="orange1-modal-more"
+			id="orange1-modal-more"
+			style="display: none"
+		>
 			<span id="close-orange1-modal-more">
 				<img src="media/close-icon.svg" alt="Закрыть" />
 			</span>
 			<h2>Каждый рубль — это шаг к возвращению к жизни</h2>
-			<p>Мы собираем 6 000 000 рублей, чтобы помочь онкопациентам не просто выжить, а вернуться к полноценной жизни после лечения.</p>
+			<p>
+				Мы собираем 6 000 000 рублей, чтобы помочь онкопациентам не просто
+				выжить, а вернуться к полноценной жизни после лечения.
+			</p>
 			<h3>Средняя стоимость помощи</h3>
-			<p>Один пациент часто нуждается в нескольких видах поддержки – например, в реабилитации, продуктах и проезде.</p>
-			<img src="media/help-cost.png" alt="Средняя стоимость помощи">
-			<p>6 миллионов — это не просто цифра. Это десятки людей, которые смогут не только победить рак, но и вернуться к работе, семье, мечтам.</p>
+			<p>
+				Один пациент часто нуждается в нескольких видах поддержки – например, в
+				реабилитации, продуктах и проезде.
+			</p>
+			<img src="media/help-cost.png" alt="Средняя стоимость помощи" />
+			<p>
+				6 миллионов — это не просто цифра. Это десятки людей, которые смогут не
+				только победить рак, но и вернуться к работе, семье, мечтам.
+			</p>
 			<h3>Почему важно собрать эту сумму?</h3>
-			<img src="media/pay-cost.png" alt="Почему важно собрать эту сумму?">
+			<img src="media/pay-cost.png" alt="Почему важно собрать эту сумму?" />
 			<h3>Ваше пожертвование заполнит шкалу — и чью-то жизнь возможностями</h3>
 			<p>Вставить сюда iFrame</p>
 			<button class="team-help-button-more">Хочу помочь</button>
-		</div>
 		</div>
 		<div class="orange-modal" id="orange2-modal">
 			<span class="close-modal">
@@ -177,6 +193,62 @@
 			<span class="close-modal">
 				<img src="media/close-icon.svg" alt="Закрыть" />
 			</span>
+		</div>
+		<div class="orange-modal" id="orange7-modal">
+			<div class="orange7-modal-content">
+				<span class="close-modal">
+					<img
+						src="media/close-icon.svg"
+						alt="Закрыть"
+						style="width: 5rem; height: 5rem"
+					/>
+				</span>
+
+				<h2>Раскрась апельсин</h2>
+				<canvas id="orangeCanvas"></canvas>
+
+				<div class="palette">
+					<button
+						class="color-btn"
+						style="background: #ff5100"
+						data-color="#FF5100"
+						aria-label="Красный"
+					></button>
+					<button
+						class="color-btn"
+						style="background: #0986eb"
+						data-color="#0986EB"
+						aria-label="Синий"
+					></button>
+					<button
+						class="color-btn"
+						style="background: #02aa03"
+						data-color="#02AA03"
+						aria-label="Зеленый"
+					></button>
+					<button
+						class="color-btn"
+						style="background: #924cd6"
+						data-color="#924CD6"
+						aria-label="Фиолетовый"
+					></button>
+					<button
+						class="color-btn"
+						style="background: #c8ff00"
+						data-color="#C8FF00"
+						aria-label="Желтый"
+					></button>
+					<button
+						class="color-btn"
+						style="background: #ff85c0"
+						data-color="#FF85C0"
+						aria-label="Розовый"
+					></button>
+				</div>
+
+				<button class="save-btn" onclick="saveDrawing()">Сохранить</button>
+				<button class="save-btn" onclick="clearCanvas()">Очистить</button>
+			</div>
 		</div>
 	</body>
 </html>
