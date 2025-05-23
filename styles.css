@@ -129,32 +129,53 @@ canvas {
 	animation: fadeIn 0.3s;
 }
 .popup {
-	background: #ffffff;
-	border-radius: 24px;
-	padding: 40px 32px 32px 32px;
-	box-shadow: 0 8px 32px #2e2c24;
-	min-width: 320px;
-	max-width: 90vw;
+	background: url('media/modal-window.svg') no-repeat center center;
+	background-size: 100% 100%;
+	width: 25rem;
+	height: 24rem;
 	text-align: center;
 	position: relative;
 	animation: popupIn 0.3s;
 	z-index: 100;
 }
 .popup .popup-pinata {
-	width: 120px;
-	margin-bottom: 24px;
+	width: 14.63rem;
+	height: 12.94rem;
+	top: 5rem;
+	left: 9.56rem;
 }
 .popup h2 {
-	margin: 0 0 12px 0;
-	font-size: 2rem;
-	color: #f1a85d;
-	font-weight: 700;
+	width: 100%;
+	text-align: center;
+	color: #2e2c24;
+	font-weight: 400;
+	font-family: 'Normalidad';
+	font-size: 2.2rem;
+	margin-top: 0;
 }
 .popup p {
 	margin: 0;
-	color: #6b5c44;
-	font-size: 1.1rem;
+	color: #2e2c24;
+	font-size: 1.2rem;
 }
+
+#close-popup-btn {
+	width: 5rem;
+	padding: 0;
+	border: none;
+	background: none;
+	cursor: pointer;
+	top: 2%;
+	position: absolute;
+	right: 3%;
+}
+
+#close-popup-btn img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -319,8 +340,8 @@ canvas {
 	width: 30.857vw;
 	height: 3.889vh;
 	left: 41.429vw;
-	top: 6.222vh;
-	font-size: 2.5vw;
+	top: 2vh;
+	font-size: 4vw;
 }
 
 .cancer-warn {
@@ -352,10 +373,17 @@ canvas {
 	height: 25vh;
 	left: 40.5vw;
 	top: 67.889vh;
-	font-size: 12.286vw;
+	font-size: 16.286vw;
 	display: flex;
 	align-items: flex-end;
 	text-align: right;
+}
+
+.no-scroll {
+	overflow: hidden;
+	height: 100vh;
+	position: fixed;
+	width: 100%;
 }
 
 /* Orange modal styles */
@@ -525,6 +553,16 @@ canvas {
 #orange8 {
 	right: 25%;
 	top: 25%;
+}
+
+#orange9 {
+	right: 35%;
+	top: 15%;
+}
+
+#orange10 {
+	right: 35%;
+	top: 0%;
 }
 
 #orange1-modal {
@@ -930,6 +968,217 @@ canvas {
 	padding: 10px 14px;
 	border-radius: 6px;
 	text-decoration: none;
+}
+
+#orange9-modal .button-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	padding: 2rem;
+	justify-items: center;
+}
+
+#orange9-modal {
+	width: 700px;
+}
+#orange9-modal .button-grid img {
+	width: 150px;
+	cursor: pointer;
+	border-radius: 12px;
+	transition: transform 0.2s;
+}
+
+#orange9-modal .button-grid img:hover {
+	transform: scale(1.05);
+	content: url('media/vid-btns/wid-btn_clicked.png');
+}
+
+.video-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.9);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}
+
+.video-modal.hidden {
+	display: none;
+}
+
+.close-btn {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	font-size: 30px;
+	color: white;
+	cursor: pointer;
+	z-index: 1000;
+}
+
+.carousel {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	max-width: 1000px;
+	overflow: visible;
+	position: relative;
+	padding: 0 20px;
+	gap: 10px;
+}
+
+.carousel video {
+	width: 120px;
+	height: 180px;
+	object-fit: cover;
+	border-radius: 10px;
+	opacity: 0.5;
+	transition: all 0.4s ease;
+	flex-shrink: 0;
+	position: relative;
+}
+
+.carousel video.active {
+	width: 300px;
+	height: 450px;
+	opacity: 1;
+	z-index: 10;
+	transform: scale(1);
+	border: 2px solid white;
+	order: 0;
+	margin: 0;
+}
+
+.carousel video.left {
+	order: -1;
+}
+
+.carousel video.right {
+	order: 1;
+}
+
+#orange10-modal .button-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1rem;
+	padding: 2rem;
+}
+
+#orange10-modal {
+	width: 700px;
+}
+.portraits-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	align-items: center;
+	gap: 15px;
+	padding: 20px;
+}
+
+.portraits-grid__item {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 100%;
+	background-clip: content-box;
+	cursor: pointer;
+	transition: transform 0.3s;
+}
+
+.portraits-grid__item:hover {
+	transform: scale(1.05);
+	background-color: #ff5100;
+}
+
+.portraits-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.portraits-modal--active {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.portraits-modal__content {
+	display: flex;
+	max-width: 900px;
+	width: 100%;
+	background: url('media/modal-window.svg') no-repeat center center;
+	background-size: cover;
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+}
+
+.portraits-modal__photo-container {
+	width: 300px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.portraits-modal__image {
+	width: 100%;
+	height: auto;
+	max-height: 400px;
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.portraits-modal__name {
+	margin-top: 15px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	color: #333;
+}
+
+.portraits-modal__text {
+	flex: 1;
+	padding: 20px;
+	overflow-y: auto;
+	max-height: 500px;
+	color: #333;
+	line-height: 1.6;
+}
+
+.portraits-modal__close {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	width: 80px;
+	height: 80px;
+	background: url('media/close-icon.svg') no-repeat center center;
+	background-size: cover;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 24px;
+	color: white;
+	border: none;
+	z-index: 10;
 }
 
 /* Caterpillar and bird styles */

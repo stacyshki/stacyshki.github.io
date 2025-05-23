@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const pinataManager = new PinataManager(confettiManager)
 
 	// Handle loading screen
+	document.body.classList.add('no-scroll')
 	const imgPromises = Array.from(document.images)
 		.filter(img => !img.complete)
 		.map(
@@ -15,18 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const bgUrls = extractBackgroundUrls()
 	const bgPromises = bgUrls.map(loadImage)
+	const loadingScreen = document.getElementById('loading-screen')
 
-	Promise.all([...imgPromises, ...bgPromises]).then(() => {
-		clearInterval(loadingInterval)
-		loadingPercentage = 100
-		loadingElement.textContent = '100%'
+	Promise.all([...imgPromises, ...bgPromises])
+		.then(() => {
+			clearInterval(loadingInterval)
+			loadingPercentage = 100
+			loadingElement.textContent = '100%'
 
-		loadingScreen.style.animation = 'slideUp 0.5s forwards'
-		setTimeout(() => {
+			loadingScreen.style.animation = 'slideUp 0.5s forwards'
+			setTimeout(() => {
+				loadingScreen.style.display = 'none'
+				container.style.display = 'flex'
+			}, 500)
+		})
+		.catch(error => {
+			console.error('Error during loading:', error)
+			clearInterval(loadingInterval)
+			loadingElement.textContent = '100%'
 			loadingScreen.style.display = 'none'
 			container.style.display = 'flex'
-		}, 500)
-	})
+		})
+		.finally(() => {
+			document.body.classList.remove('no-scroll')
+		})
 
 	document.getElementById('orange5').addEventListener('click', function () {
 		this.classList.remove('clicked')
@@ -308,14 +321,19 @@ if (pinata) {
 
 		if (clickCount === 1) {
 			const hintElement = document.createElement('div')
-			hintElement.textContent = 'Продолжай нажимать, чтобы сломать пинату!'
+			hintElement.textContent = 'Привет, я даю подарки!'
 			hintElement.style.position = 'absolute'
-			hintElement.style.top = '5%'
-			hintElement.style.left = '50%'
-			hintElement.style.transform = 'translateX(-50%)'
-			hintElement.style.backgroundColor = '#f2994a'
-			hintElement.style.color = 'white'
-			hintElement.style.padding = '5px'
+			hintElement.style.top = pinata.clientHeight * 1.5 + 'px'
+			hintElement.style.left = pinata.clientWidth * 0.7 + 'px'
+			hintElement.style.transform =
+				'translateX(' + pinata.clientWidth * 0.7 + 'px)'
+			hintElement.style.backgroundImage = 'url("media/modal-window.svg")'
+			hintElement.style.backgroundSize = 'contain'
+			hintElement.style.backgroundRepeat = 'no-repeat'
+			hintElement.style.backgroundPosition = 'center'
+			hintElement.style.backgroundSize = '100% 100%'
+			hintElement.style.color = '#2E2C24'
+			hintElement.style.padding = '10px'
 			hintElement.style.borderRadius = '5px'
 			hintElement.style.zIndex = '1000'
 			document.body.appendChild(hintElement)
@@ -346,7 +364,7 @@ function showPopup() {
 	popupShown = true
 	const promo = getRandomPromoCode()
 	const promoElement = document.createElement('div')
-	promoElement.innerHTML = `<strong>${promo.company}</strong>: <span style="text-decoration: underline; color: #2e2c24; cursor: pointer;">${promo.code}</span>`
+	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5rem;border-radius: 5rem;">${promo.code}<img src="media/copy.png" alt="Copy" style="width: 1rem; height: 1rem; margin-left: 0.5rem;"></span><br /><br />Промокод от "${promo.company}"!`
 	promoElement.addEventListener('click', () => {
 		navigator.clipboard.writeText(promo.code).then(() => {
 			alert('Промокод скопирован в буфер обмена!')
@@ -360,22 +378,23 @@ function showPopup() {
 }
 
 document
-	.getElementById('popup-backdrop')
-	.addEventListener('mousedown', function (e) {
-		if (e.target === this) {
-			this.style.display = 'none'
-			popupShown = false
-			clickCount = 0
-			allConfetti = [] // Clear all confetti
-			if (animationFrameId) {
-				cancelAnimationFrame(animationFrameId)
-				animationFrameId = null
-			}
-			// Restart the confetti animation
-			const confettiManager = new ConfettiManager()
-			confettiManager.clear()
-			confettiManager.animate()
+	.getElementById('close-popup-btn')
+	.addEventListener('click', function () {
+		const popup = document.getElementById('popup-backdrop')
+		popup.style.display = 'none'
+		popupShown = false
+		clickCount = 0
+		allConfetti = [] // Очистка конфетти
+
+		if (animationFrameId) {
+			cancelAnimationFrame(animationFrameId)
+			animationFrameId = null
 		}
+
+		// Перезапуск конфетти (если нужно)
+		const confettiManager = new ConfettiManager()
+		confettiManager.clear()
+		confettiManager.animate()
 	})
 
 class PinataManager {
@@ -645,7 +664,7 @@ document.querySelectorAll('.download-button').forEach(button => {
 	button.addEventListener('click', event => {
 		const cardFileName = event.target.getAttribute('data-card')
 		const link = document.createElement('a')
-		link.href = `media/${cardFileName}`
+		link.href = `media/cards/${cardFileName}`
 		link.download = cardFileName
 		document.body.appendChild(link)
 		link.click()
@@ -671,10 +690,45 @@ document.querySelectorAll('.card').forEach(card => {
 
 document
 	.getElementById('download-selected-card')
-	.addEventListener('click', () => {
-		if (selectedCard) {
+	.addEventListener('click', async () => {
+		if (!selectedCard) return
+
+		try {
+			const response = await fetch(`media/cards/${selectedCard}`)
+			const svgText = await response.text()
+
+			const canvas = document.createElement('canvas')
+			const ctx = canvas.getContext('2d')
+
+			const img = new Image()
+			img.src =
+				'data:image/svg+xml;base64,' +
+				btoa(unescape(encodeURIComponent(svgText)))
+
+			await new Promise(resolve => {
+				img.onload = resolve
+				img.onerror = () => {
+					console.error('Error loading SVG')
+					resolve()
+				}
+			})
+
+			canvas.width = img.width
+			canvas.height = img.height
+
+			ctx.drawImage(img, 0, 0)
+
 			const link = document.createElement('a')
-			link.href = `media/${selectedCard}`
+			link.download = selectedCard.replace('.svg', '.png')
+			link.href = canvas.toDataURL('image/png')
+
+			document.body.appendChild(link)
+			link.click()
+			document.body.removeChild(link)
+		} catch (error) {
+			console.error('Error converting SVG to PNG:', error)
+			const link = document.createElement('a')
+			link.href = `media/cards/${selectedCard}`
 			link.download = selectedCard
 			document.body.appendChild(link)
 			link.click()
@@ -812,9 +866,11 @@ document
 
 	function getTouchPos(e) {
 		const rect = canvas.getBoundingClientRect()
+		scaleX = canvas.width / rect.width
+		scaleY = canvas.height / rect.height
 		return {
-			x: e.touches[0].clientX - rect.left,
-			y: e.touches[0].clientY - rect.top,
+			x: (e.touches[0].clientX - rect.left) * scaleX,
+			y: (e.touches[0].clientY - rect.top) * scaleY,
 		}
 	}
 
@@ -836,16 +892,71 @@ document
 		if (!drawing) return
 
 		const rect = canvas.getBoundingClientRect()
-		const x = e.clientX - rect.left
-		const y = e.clientY - rect.top
+		scaleX = canvas.width / rect.width
+		scaleY = canvas.height / rect.height
+		const x = (e.clientX - rect.left) * scaleX
+		const y = (e.clientY - rect.top) * scaleY
 		handleDraw({ x, y })
 	})
 
 	window.saveDrawing = function () {
-		const link = document.createElement('a')
-		link.download = 'orange.png'
-		link.href = canvas.toDataURL()
-		link.click()
+		const FIGMA = {
+			bgWidth: 506,
+			bgHeight: 655,
+			drawX: 133,
+			drawY: 173,
+			drawWidth: 241,
+			drawHeight: 248,
+		}
+
+		const sourceCanvas = document.getElementById('orangeCanvas')
+		const tempCanvas = document.createElement('canvas')
+		const tempCtx = tempCanvas.getContext('2d')
+
+		tempCanvas.width = FIGMA.bgWidth
+		tempCanvas.height = FIGMA.bgHeight
+
+		const bgImage = new Image()
+		bgImage.crossOrigin = 'anonymous'
+		bgImage.src = 'media/cGame_sheet.png'
+
+		bgImage.onload = function () {
+			tempCtx.drawImage(bgImage, 0, 0, FIGMA.bgWidth, FIGMA.bgHeight)
+
+			const sourceRatio = sourceCanvas.width / sourceCanvas.height
+			const targetRatio = FIGMA.drawWidth / FIGMA.drawHeight
+
+			let scale,
+				offsetX = 0,
+				offsetY = 0
+
+			if (sourceRatio > targetRatio) {
+				scale = FIGMA.drawHeight / sourceCanvas.height
+				offsetX = (FIGMA.drawWidth - sourceCanvas.width * scale) / 2
+			} else {
+				scale = FIGMA.drawWidth / sourceCanvas.width
+				offsetY = (FIGMA.drawHeight - sourceCanvas.height * scale) / 2
+			}
+
+			tempCtx.save()
+			tempCtx.translate(FIGMA.drawX, FIGMA.drawY)
+			tempCtx.translate(offsetX, offsetY)
+			tempCtx.scale(scale, scale)
+			tempCtx.drawImage(sourceCanvas, 0, 0)
+			tempCtx.restore()
+
+			const link = document.createElement('a')
+			link.download = 'orange.png'
+			link.href = tempCanvas.toDataURL('image/png')
+			link.click()
+		}
+
+		bgImage.onerror = function () {
+			const link = document.createElement('a')
+			link.download = 'orange-only.png'
+			link.href = sourceCanvas.toDataURL('image/png')
+			link.click()
+		}
 	}
 
 	window.clearCanvas = function () {
@@ -925,4 +1036,160 @@ window.addEventListener('click', e => {
 	if (e.target === sharePopup) {
 		sharePopup.classList.add('hidden')
 	}
+})
+
+// Video
+const videoSources = [
+	'media/videos/video1.mp4',
+	'media/videos/video2.mp4',
+	'media/videos/video3.mp4',
+	'media/videos/video4.mp4',
+	'media/videos/video5.mp4',
+	'media/videos/video6.mp4',
+]
+
+const modal = document.getElementById('video-modal')
+const carousel = document.getElementById('carousel')
+const closeBtn = document.querySelector('.close-btn')
+const videoBtns = document.querySelectorAll('.video-btn')
+
+let currentIndex = 0
+
+videoBtns.forEach(btn => {
+	btn.addEventListener('click', () => {
+		currentIndex = parseInt(btn.dataset.index)
+		openModal(currentIndex)
+	})
+})
+
+closeBtn.addEventListener('click', () => {
+	modal.classList.add('hidden')
+	carousel.innerHTML = ''
+})
+
+function openModal(index) {
+	modal.classList.remove('hidden')
+	renderCarousel(index)
+}
+
+function renderCarousel(activeIndex) {
+	carousel.innerHTML = ''
+
+	for (let i = Math.max(0, activeIndex - 2); i < activeIndex; i++) {
+		createVideoElement(i, 'left')
+	}
+
+	createVideoElement(activeIndex, 'active')
+
+	for (
+		let i = activeIndex + 1;
+		i <= Math.min(videoSources.length - 1, activeIndex + 2);
+		i++
+	) {
+		createVideoElement(i, 'right')
+	}
+
+	setTimeout(() => {
+		const activeVideo = carousel.querySelector('.active')
+		if (activeVideo) {
+			activeVideo.scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest',
+				inline: 'center',
+			})
+		}
+	}, 50)
+}
+
+function createVideoElement(index, positionClass) {
+	const vid = document.createElement('video')
+	vid.src = videoSources[index]
+	vid.classList.add(positionClass)
+	vid.muted = positionClass !== 'active'
+	vid.loop = true
+	vid.playsInline = true
+	vid.autoplay = true
+
+	if (positionClass === 'active') {
+		vid.controls = true
+		vid.muted = false
+		vid.play()
+	} else {
+		vid.controls = false
+	}
+
+	vid.addEventListener('click', () => {
+		currentIndex = index
+		renderCarousel(currentIndex)
+	})
+
+	carousel.appendChild(vid)
+}
+
+// Portraits
+const personsData = {
+	1: {
+		name: 'Иванов Иван Иванович',
+		text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus feugiat fermentum ex, molestie elementum enim ornare eget. Mauris vitae purus mi. Vivamus vehicula arcu sit amet congue pharetra. Vestibulum volutpat, mauris eget consequat lacinia, nunc risus mattis purus, id feugiat enim lorem non libero. Praesent quis luctus nisi. Aenean accumsan fermentum dolor ut eleifend. Mauris ut consequat neque, sed aliquet elit. Sed gravida eget lacus et interdum. Vestibulum vitae dictum tellus. Proin convallis vitae ex quis laoreet. Vivamus pretium porta est et rutrum. Mauris convallis urna sit amet ipsum eleifend, at vestibulum ipsum faucibus. Maecenas non sem ac nisl porta facilisis. Etiam non diam mi. 
+Sed gravida velit id euismod gravida. Proin volutpat, orci sed tristique dignissim, nisi nulla dapibus nunc, sed condimentum nibh ligula vel dui. Mauris lacinia fringilla risus, id mattis augue ornare quis. Nulla vel nisl sed lectus finibus rhoncus. Quisque pharetra ornare mauris ac mattis. Nullam eleifend feugiat nulla eu ornare. Pellentesque imperdiet, purus nec posuere eleifend, nisl lorem suscipit dui, in dapibus massa justo nec enim. Maecenas pulvinar aliquet turpis, id hendrerit elit commodo at. Pellentesque a porttitor tellus. Etiam id metus ut massa ultricies pharetra. 
+Mauris sed dui odio. Quisque pretium pellentesque risus, et accumsan lectus vulputate nec. Sed ut viverra ligula. Proin rhoncus lacus iaculis libero ornare, ut mollis enim mattis. Suspendisse potenti. Donec quis lacus purus. Proin eu tortor a turpis fringilla ornare. Cras quis tempus ligula, maximus egestas dolor. Quisque a hendrerit ipsum, in ultricies sapien. 
+Donec eget viverra enim. Vivamus eu semper elit. Mauris tristique mauris vitae dolor elementum, nec efficitur est sollicitudin. Aliquam et interdum risus. Nam maximus nibh magna, sed euismod ex semper eu. Mauris iaculis diam commodo, eleifend augue at, fermentum risus. Phasellus vehicula consectetur leo eget tempus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam malesuada consequat sem, non tempus augue tincidunt in. Suspendisse ullamcorper, est eget dictum malesuada, diam risus feugiat diam, eget varius ligula mauris et justo. Vivamus congue dui non rutrum vulputate. Morbi lacinia auctor est, vel malesuada nulla ultrices quis. 
+Sed quis justo blandit, egestas libero nec, mollis nulla. Donec eu elit lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus maximus mauris justo, vel eleifend sem sodales in. Proin a varius dui. Maecenas sapien diam, semper id mollis et, tristique eu arcu. Nulla dapibus malesuada nisi, a mattis ipsum scelerisque at. 
+Quisque maximus non orci eu luctus. Quisque sed eleifend neque. Aliquam convallis luctus ex, nec varius turpis. Fusce eu libero varius, luctus elit a, mattis metus. Integer non justo quis diam vulputate pulvinar. Sed a elementum dui. Aenean dictum ligula at odio tincidunt dictum. Praesent non lacinia nisi. Phasellus feugiat lacus vel sem rhoncus, eget feugiat tellus pharetra. Sed posuere ipsum lorem, non ultricies nisl eleifend ut. Morbi id mollis leo. Ut at eleifend leo. Quisque ut viverra massa, eget porta nisl. Nulla congue mattis quam interdum faucibus. Donec rhoncus risus tortor, ut viverra nisi pretium sed. Mauris sagittis arcu dapibus, cursus arcu in, porta nisl. 
+Aliquam nec placerat arcu. Mauris cursus dignissim risus, non ultricies dolor facilisis id. Nulla auctor in purus quis fringilla. Integer malesuada magna nec rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer et ante interdum, finibus dolor bibendum, ornare quam. Proin auctor velit id massa elementum, in cursus augue elementum. Morbi at sagittis diam, a iaculis justo. Quisque pharetra posuere elit, a luctus lorem. Cras posuere nisl non venenatis placerat. 
+`,
+	},
+	2: {
+		name: 'Петров Петр Петрович',
+		text: 'Информация о втором человеке. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+	},
+	3: {
+		name: 'Сидорова Анна Михайловна',
+		text: 'Информация о восьмом человеке. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+	},
+	4: {
+		name: 'Иванов Иван Иванович',
+		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+	},
+	5: {
+		name: 'Иванов Иван Иванович',
+		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+	},
+	6: {
+		name: 'Иванов Иван Иванович',
+		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+	},
+	7: {
+		name: 'Иванов Иван Иванович',
+		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+	},
+	8: {
+		name: 'Иванов Иван Иванович',
+		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+	},
+}
+
+const modalPt = document.getElementById('portraitsModal')
+const modalImgPt = modalPt.querySelector('.portraits-modal__image')
+const modalNamePt = modalPt.querySelector('.portraits-modal__name')
+const modalTextPt = modalPt.querySelector('.portraits-modal__text')
+const closeBtnPt = modalPt.querySelector('.portraits-modal__close')
+const portraitItems = document.querySelectorAll('.portraits-grid__item')
+
+portraitItems.forEach(item => {
+	item.addEventListener('click', () => {
+		const personId = item.getAttribute('data-id')
+		const personData = personsData[personId]
+
+		modalImgPt.src = item.src
+		modalImgPt.alt = item.alt
+		modalNamePt.textContent = personData.name
+		modalTextPt.innerHTML = `<p>${personData.text}</p>`
+
+		modalPt.classList.add('portraits-modal--active')
+	})
+})
+
+closeBtnPt.addEventListener('click', () => {
+	modalPt.classList.remove('portraits-modal--active')
 })

@@ -50,6 +50,12 @@
 			<div class="orange" id="orange8" data-modal="orange8-modal">
 				<img src="media/orange.svg" alt="Апельсин 8" />
 			</div>
+			<div class="orange" id="orange9" data-modal="orange9-modal">
+				<img src="media/orange.svg" alt="Апельсин 9" />
+			</div>
+			<div class="orange" id="orange10" data-modal="orange10-modal">
+				<img src="media/orange.svg" alt="Апельсин 10" />
+			</div>
 
 			<div class="caterpillar">
 				<img src="media/caterpillar.svg" alt="Гусеница" />
@@ -88,6 +94,9 @@
 		</div>
 		<div class="popup-backdrop" id="popup-backdrop" style="display: none">
 			<div class="popup">
+				<button id="close-popup-btn">
+					<img src="media/close-icon.svg" alt="Закрыть" />
+				</button>
 				<img class="popup-pinata" src="media/popup-pinata.svg" alt="Пиньята" />
 				<h2>Лови подарок!</h2>
 				<p></p>
@@ -101,16 +110,16 @@
 				<h2>Выбери открытку</h2>
 				<div class="cards">
 					<div class="card" data-card="card.svg">
-						<img src="media/card.svg" alt="Карточка 1" />
+						<img src="media/cards/card.svg" alt="Карточка 1" />
 					</div>
 					<div class="card" data-card="card_2.svg">
-						<img src="media/card_2.svg" alt="Карточка 2" />
+						<img src="media/cards/card_2.svg" alt="Карточка 2" />
 					</div>
 					<div class="card" data-card="card_3.svg">
-						<img src="media/card_3.svg" alt="Карточка 3" />
+						<img src="media/cards/card_3.svg" alt="Карточка 3" />
 					</div>
 					<div class="card" data-card="card_4.svg">
-						<img src="media/card_4.svg" alt="Карточка 4" />
+						<img src="media/cards/card_4.svg" alt="Карточка 4" />
 					</div>
 				</div>
 				<button id="download-selected-card" disabled>
@@ -274,16 +283,130 @@
 					<p>Поделиться в:</p>
 					<div class="share-buttons">
 						<a id="tgLink" target="_blank"
-							><img src="media/telegram.svg" alt="Телеграм"
+							><img src="media/share-logos/telegram.svg" alt="Телеграм"
 						/></a>
 						<a id="vkLink" target="_blank"
-							><img src="media/vk.svg" alt="ВКонтакте"
+							><img src="media/share-logos/vk.svg" alt="ВКонтакте"
 						/></a>
 						<a id="waLink" target="_blank"
-							><img src="media/whatsapp.svg" alt="Вотсап"
+							><img src="media/share-logos/whatsapp.svg" alt="Вотсап"
 						/></a>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="orange-modal" id="orange9-modal">
+			<span class="close-modal">
+				<img src="media/close-icon.svg" alt="Закрыть" />
+			</span>
+			<div class="button-grid">
+				<img
+					src="media/vid-btns/button1.png"
+					class="video-btn"
+					data-index="0"
+					alt="Видео 1"
+				/>
+				<img
+					src="media/vid-btns/button2.png"
+					class="video-btn"
+					data-index="1"
+					alt="Видео 2"
+				/>
+				<img
+					src="media/vid-btns/button3.png"
+					class="video-btn"
+					data-index="2"
+					alt="Видео 3"
+				/>
+				<img
+					src="media/vid-btns/button4.png"
+					class="video-btn"
+					data-index="3"
+					alt="Видео 4"
+				/>
+				<img
+					src="media/vid-btns/button5.png"
+					class="video-btn"
+					data-index="4"
+					alt="Видео 5"
+				/>
+				<img
+					src="media/vid-btns/button6.png"
+					class="video-btn"
+					data-index="5"
+					alt="Видео 6"
+				/>
+			</div>
+		</div>
+		<div id="video-modal" class="video-modal hidden">
+			<span class="close-btn">&times;</span>
+			<div class="carousel" id="carousel"></div>
+		</div>
+		<div class="orange-modal" id="orange10-modal">
+			<span class="close-modal">
+				<img src="media/close-icon.svg" alt="Закрыть" />
+			</span>
+			<div class="portraits-grid">
+				<img
+					src="media/portraits/portrait1.png"
+					class="portraits-grid__item"
+					data-id="1"
+					alt="Портрет 1"
+				/>
+				<img
+					src="media/portraits/portrait2.png"
+					class="portraits-grid__item"
+					data-id="2"
+					alt="Портрет 2"
+				/>
+				<img
+					src="media/portraits/portrait3.png"
+					class="portraits-grid__item"
+					data-id="3"
+					alt="Портрет 3"
+				/>
+				<img
+					src="media/portraits/portrait4.png"
+					class="portraits-grid__item"
+					data-id="4"
+					alt="Портрет 4"
+				/>
+				<img
+					src="media/portraits/portrait5.png"
+					class="portraits-grid__item"
+					data-id="5"
+					alt="Портрет 5"
+				/>
+				<img
+					src="media/portraits/portrait6.png"
+					class="portraits-grid__item"
+					data-id="6"
+					alt="Портрет 6"
+				/>
+				<img
+					src="media/portraits/portrait7.png"
+					class="portraits-grid__item"
+					data-id="7"
+					alt="Портрет 7"
+				/>
+				<img
+					src="media/portraits/portrait8.png"
+					class="portraits-grid__item"
+					data-id="8"
+					alt="Портрет 8"
+				/>
+			</div>
+		</div>
+		<div class="portraits-modal" id="portraitsModal">
+			<div class="portraits-modal__content">
+				<button class="portraits-modal__close" aria-label="Закрыть"></button>
+
+				<div class="portraits-modal__photo-container">
+					<img src="" alt="" class="portraits-modal__image" />
+					<div class="portraits-modal__name"></div>
+				</div>
+
+				<div class="portraits-modal__text"></div>
 			</div>
 		</div>
 
