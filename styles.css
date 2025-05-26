@@ -67,16 +67,17 @@ body::-webkit-scrollbar-track {
 /* Pinata area styles */
 .pinata-area {
 	position: absolute;
-	left: 18%;
+	left: 19%;
 	top: 49%;
-	width: 20rem;
-	height: 20rem;
+	width: 20vw;
+	height: 20vh;
 	z-index: 2;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	overflow: visible;
 }
+
 .pinata {
 	position: absolute;
 	width: 100%;
@@ -131,18 +132,19 @@ canvas {
 .popup {
 	background: url('media/modal-window.svg') no-repeat center center;
 	background-size: 100% 100%;
-	width: 25rem;
-	height: 24rem;
+	width: 46%;
+	height: 66%;
 	text-align: center;
 	position: relative;
 	animation: popupIn 0.3s;
 	z-index: 100;
 }
 .popup .popup-pinata {
-	width: 14.63rem;
-	height: 12.94rem;
-	top: 5rem;
-	left: 9.56rem;
+	height: 45%;
+	top: 11%;
+	left: 0;
+	width: 51.5%;
+	position: relative;
 }
 .popup h2 {
 	width: 100%;
@@ -150,24 +152,26 @@ canvas {
 	color: #2e2c24;
 	font-weight: 400;
 	font-family: 'Normalidad';
-	font-size: 2.2rem;
-	margin-top: 0;
+	font-size: 4.2vw;
+	margin-top: 9%;
 }
+
 .popup p {
-	margin: 0;
 	color: #2e2c24;
-	font-size: 1.2rem;
+	font-size: 1.92vw;
+	margin-top: -6%;
+	line-height: 177%;
 }
 
 #close-popup-btn {
-	width: 5rem;
+	width: 19%;
 	padding: 0;
 	border: none;
 	background: none;
 	cursor: pointer;
 	top: 2%;
 	position: absolute;
-	right: 3%;
+	right: 1%;
 }
 
 #close-popup-btn img {
@@ -389,10 +393,20 @@ canvas {
 /* Orange modal styles */
 .orange {
 	position: absolute;
-	width: 3.95%;
+	width: 5.5%;
 	height: auto;
 	z-index: 1;
 }
+
+.orange img {
+	width: 100%;
+	height: 100%;
+}
+
+.orange img.gray {
+	filter: grayscale(1) brightness(3) contrast(0.5);
+}
+
 .orange-modal {
 	display: none;
 	position: absolute;
@@ -423,25 +437,27 @@ canvas {
 }
 
 #orange1 {
-	left: 8.5%;
-	top: 40%;
+	left: 17.5%;
+	top: 26%;
+	z-index: 9;
 }
 
 #orange2 {
-	left: 35.29%;
+	left: 11.3%;
 	top: 5%;
 }
 
 #orange3 {
-	left: 16%;
-	top: 6.22%;
+	left: 62.9%;
+	top: 15.2%;
+	z-index: 6;
 }
 
 #orange4 {
 	position: absolute;
-	left: 23%;
-	top: 22%;
-	width: 6.95%;
+	left: 80%;
+	top: 53%;
+	width: 5.5%;
 	height: auto;
 	z-index: 1;
 }
@@ -449,6 +465,14 @@ canvas {
 #orange4 img {
 	width: 100%;
 	height: auto;
+}
+
+#orange4:hover img {
+	content: url('media/peeling/peel1.svg');
+	animation: peelAnimation 1s steps(3) forwards;
+	width: 100%;
+	height: auto;
+	pointer-events: none;
 }
 
 #orange4.clicked img {
@@ -467,21 +491,21 @@ canvas {
 		content: url('media/peeling/peel2.svg');
 	}
 	50% {
-		content: url('media/peeling/peel3.svg');
+		content: url('media/peeling/peel2.svg');
 	}
 	75% {
 		content: url('media/peeling/peel3.svg');
 	}
 	100% {
-		content: url('media/orange.svg');
+		content: url('media/peeling/peel3.svg');
 	}
 }
 
 #orange5 {
 	position: absolute;
-	left: 75%;
-	top: 10%;
-	width: 6.95%;
+	right: 14%;
+	top: 27%;
+	width: 5.5%;
 	height: auto;
 	z-index: 1;
 }
@@ -489,6 +513,14 @@ canvas {
 #orange5 img {
 	width: 100%;
 	height: auto;
+}
+
+#orange5:hover img {
+	content: url('media/hedgehog/hedgehog.svg');
+	animation: revertToOrange 1s forwards;
+	width: 100%;
+	height: auto;
+	pointer-events: none;
 }
 
 #orange5.clicked img {
@@ -510,9 +542,9 @@ canvas {
 
 #orange6 {
 	position: absolute;
-	left: 50%;
-	top: 14%;
-	width: 6.95%;
+	left: 8%;
+	top: 44%;
+	width: 5.5%;
 	height: auto;
 	z-index: 1;
 }
@@ -522,6 +554,7 @@ canvas {
 	height: auto;
 }
 
+#orange6.hovered img,
 #orange6.clicked img {
 	animation: dropAndGrow 2s forwards;
 	pointer-events: none;
@@ -546,33 +579,34 @@ canvas {
 }
 
 #orange7 {
-	right: 15%;
-	top: 30%;
+	right: 33%;
+	top: 43%;
 }
 
 #orange8 {
-	right: 25%;
-	top: 25%;
+	left: 50%;
+	top: 5%;
 }
 
 #orange9 {
-	right: 35%;
-	top: 15%;
+	left: 30%;
+	top: 14%;
+	z-index: 7;
 }
 
 #orange10 {
-	right: 35%;
-	top: 0%;
+	right: 65%;
+	top: 30%;
+	z-index: 4;
 }
 
 #orange1-modal {
-	position: fixed; /* обязательно, чтобы внутри позиционировать кнопки */
+	position: fixed;
 	background: url('media/modal-window.svg') no-repeat center center;
 	background-size: cover;
 	padding: 20px;
-	min-height: 300px; /* или сколько нужно, чтобы не съехало */
 	box-sizing: border-box;
-	z-index: 1000;
+	z-index: 8;
 	font-family: 'Normalidad';
 	font-style: normal;
 	font-weight: 400;
@@ -580,11 +614,16 @@ canvas {
 	font-size: 1.5vw;
 	color: #2e2c24;
 	overflow-x: hidden;
+	top: 26%;
+	left: 35%;
+	height: 27vh;
+	width: 37vw;
+	text-align: center;
 }
 
 .buttons-wrapper {
 	position: absolute;
-	bottom: 20px; /* отступ от низа */
+	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 	display: flex;
@@ -593,10 +632,10 @@ canvas {
 
 #orange1-modal .team-help-button,
 #orange1-modal #learn-more {
-	width: 7rem;
-	height: 3.5rem;
+	width: 10vw;
+	height: 3.5vh;
 	background: url('media/button.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
@@ -605,13 +644,19 @@ canvas {
 	font-family: 'Normalidad';
 	font-style: normal;
 	font-weight: 400;
-	line-height: 130%;
-	font-size: 1.5vw;
+	line-height: 120%;
+	font-size: 1vw;
 }
 
 #orange1-modal .team-help-button:hover,
 #orange1-modal #learn-more:hover {
 	filter: brightness(1.5);
+}
+
+#orange1-modal #learn-more {
+	background: url('media/modal-window.svg') no-repeat center center;
+	background-size: 100% 100%;
+	color: #2e2c24;
 }
 
 #orange1-modal .close-modal {
@@ -631,7 +676,7 @@ canvas {
 #orange1-modal-more {
 	position: relative;
 	background: url('media/modal-window.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	font-family: 'Normalidad';
 	font-style: normal;
 	font-weight: 400;
@@ -640,31 +685,34 @@ canvas {
 	color: #2e2c24;
 	z-index: 1000;
 	position: fixed;
-	top: 10%;
-	left: 20%;
-	width: 50%;
-	height: 70%;
-	max-width: 100%;
-	max-height: 100%;
-	flex-shrink: 1;
+	width: 99vw;
+	height: 88vh;
 	word-wrap: break-word;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding-top: 3vh;
-	padding-bottom: 3vh;
 	overflow-y: auto;
+	top: 0;
 }
 
+#orange1-modal-more h2 {
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	font-size: 3vw;
+}
 #orange1-modal-more img {
 	max-width: 100%;
+	max-height: 80vh;
 	height: auto;
-	object-fit: contain;
+	width: auto;
 	display: block;
+	object-fit: contain;
+	margin: 1rem auto;
 }
 
-#orange1-modal-more .close-modal {
+#close-orange1-modal-more {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
@@ -672,6 +720,14 @@ canvas {
 	height: 20px;
 	cursor: pointer;
 	z-index: 1001;
+}
+
+#orange1-modal-more h2 {
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	font-size: 1.5vw;
 }
 
 #orange1-modal-more .team-help-button-more {
@@ -695,8 +751,8 @@ canvas {
 #orange2-modal {
 	background: url('media/modal-window.svg') no-repeat center center;
 	background-size: cover;
-	width: 90vw;
-	height: 70vh;
+	width: 88vw;
+	height: 93vh;
 	position: fixed;
 	border-radius: 10px;
 	z-index: 999;
@@ -710,14 +766,17 @@ canvas {
 	font-size: 1.5vw;
 	overflow-x: hidden;
 	align-items: center;
+	top: 0;
 }
+
 .team-img {
-	margin-top: 3.5rem;
+	margin-top: -5vh;
 	padding: 0 4rem;
 	width: 90%;
-	height: 100%;
+	height: 95%;
 	align-items: center;
 }
+
 .team-dir-img {
 	width: 90%;
 	height: auto;
@@ -727,98 +786,125 @@ canvas {
 #orange2-modal h2 {
 	padding: 0 1rem;
 	text-align: center;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	font-size: 2vw;
 }
 #orange2-modal p {
 	padding: 0 1rem;
 	text-align: center;
 	margin-left: 5rem;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	font-size: 1.5vw;
 }
 
 #orange3-modal {
 	background: url('media/lemonade.svg') no-repeat center center;
-	background-size: contain;
-	width: 100%;
-	height: 100%;
-	max-width: 480px;
-	max-height: 590px;
-	position: fixed;
-	top: 50%;
-	left: 50%;
+	background-size: 100% 100%;
+	width: 37%;
+	height: 49%;
+	position: absolute;
+	top: 40%;
+	left: 54.5%;
 	transform: translate(-50%, -50%);
 	padding: 20px;
 	border-radius: 10px;
 	z-index: 1000;
 	border: none;
 	box-shadow: none;
+	z-index: 5;
+}
+
+#orange3-modal .close-modal {
+	position: absolute;
+	top: -1%;
+	left: 13%;
+	z-index: 10;
+	width: 12%;
+	cursor: pointer;
 }
 
 .close-modal {
 	position: absolute;
-	top: 3%;
+	top: 0%;
 	right: 5%;
 	z-index: 10;
 	cursor: pointer;
 }
+
+.close-modal img {
+	width: 100%;
+	height: 100%;
+}
 .team-help-button {
 	background: url('media/button.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	color: #fff;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	width: 7rem;
-	height: 3.5rem;
+	width: 18vw;
+	height: 8vh;
 	display: block;
-	margin: 40px auto 0;
+	margin: 7vh auto 7vh;
+	font-size: xx-large;
 }
 
 #orange7-modal {
 	background: url('media/cGame_sheet.png') center center no-repeat;
-	background-size: cover;
+	background-size: 100% 100%;
 	display: none;
 	overflow: hidden;
+	width: 34vw;
+	height: 69vh;
 }
+
 #orange7-modal.active {
 	display: flex;
 }
 
 .orange7-modal-content {
-	padding: 20px;
-	border-radius: 8px;
-	width: 50rem;
-	height: 30rem;
+	width: 100%;
+	height: 100%;
 	position: relative;
 	text-align: center;
 }
 
 .orange7-modal-content .close-modal {
 	position: absolute;
-	top: 0;
-	left: -5%;
-	width: 1rem;
+	top: -2%;
+	right: -4%;
+	width: 7vw;
 	height: auto;
 	cursor: pointer;
 	transition: opacity 0.2s ease;
 }
 
-.orange7-modal-content .orange7-modal-content h2 {
+.orange7-modal-content h2 {
 	margin-top: 0;
-	left: -50%;
+	left: 23%;
 	font-family: 'Normalidad';
 	font-style: normal;
 	font-weight: 400;
 	line-height: 130%;
 	font-size: 2vw;
 	color: #2e2c24;
-	text-shadow: 0 0 10px #f2994a;
+	max-width: 50%;
+	position: relative;
+	top: 6%;
 }
 
 .orange7-modal-content canvas {
-	width: 25rem;
+	width: 100%;
 	height: auto;
 	display: block;
 	pointer-events: all;
-	margin: 10rem 0;
+	margin: 20vh 0;
 }
 
 .orange7-modal-content .action-buttons {
@@ -828,7 +914,7 @@ canvas {
 }
 
 .orange7-modal-content .palette {
-	margin: 20rem 0;
+	margin: 50vh 0;
 	margin-bottom: 0;
 }
 
@@ -848,25 +934,27 @@ canvas {
 	font-size: 16px;
 	border-radius: 6px;
 	cursor: pointer;
-	color: #000;
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .orange7-modal-content .save-btn {
 	display: inline-block;
 	margin: 10px 6px 0 6px;
+	color: rgba(244, 237, 222, 1);
 }
 
 .orange7-modal-content button.save-btn:hover {
-	background-color: #f1a85d;
+	background-color: #ff5100;
 }
 
 #orange8-modal {
-	background: url('media/modal-window.svg') no-repeat center center;
-	background-size: cover;
-	width: 50rem;
-	height: 37rem;
-	top: 5%;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.8);
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+	top: 0;
 }
 
 #orange8-modal h2 {
@@ -875,9 +963,10 @@ canvas {
 	font-style: normal;
 	font-weight: 700;
 	line-height: 100%;
-	font-size: 2vw;
+	font-size: 4vw;
 	margin-top: 1rem;
 	text-align: center;
+	color: #faf9f8;
 }
 
 #orange8-modal .wheel-wrapper {
@@ -903,20 +992,23 @@ canvas {
 	transform: rotate(-90deg);
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
-	border-bottom: 30px solid red;
+	border-bottom: 30px solid #ff5100;
 	z-index: 10;
 }
 
 #orange8-modal #spinBtn,
 #orange8-modal #openSharePopup {
-	margin-top: 1rem;
+	margin-top: 25vh;
 	padding: 0.5rem 1rem;
 	font-size: 18px;
-	background-color: orange;
+	background-color: #ff5100;
 	border: none;
 	border-radius: 8px;
 	cursor: pointer;
-	color: #2e2c24;
+	color: #faf9f8;
+	align-content: center;
+	left: 43%;
+	position: relative;
 }
 
 #orange8-modal #resultText {
@@ -934,16 +1026,14 @@ canvas {
 	font-weight: 700;
 	line-height: 130%;
 	font-size: 2vw;
-	color: #f1a85d;
+	color: #ff5100;
 	text-align: center;
 }
 
 #orange8-modal .share-popup {
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	top: 22%;
+	left: 39%;
 	z-index: 999;
 	display: flex;
 	align-items: center;
@@ -960,6 +1050,11 @@ canvas {
 	border-radius: 10px;
 	text-align: center;
 	position: relative;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 250%;
+	font-size: 3vw;
 }
 
 #orange8-modal.share-buttons a {
@@ -979,10 +1074,26 @@ canvas {
 }
 
 #orange9-modal {
-	width: 700px;
+	max-width: 55vw;
+	border-radius: 28px;
+	top: 12%;
+	left: 57%;
+	z-index: 6;
 }
+
+#orange9-modal h2 {
+	position: relative;
+	font-family: 'Normalidad';
+	font-style: normal;
+	line-height: 130%;
+	font-weight: 400;
+	font-size: 2vw;
+	right: -27%;
+	max-width: 50%;
+}
+
 #orange9-modal .button-grid img {
-	width: 150px;
+	width: 80%;
 	cursor: pointer;
 	border-radius: 12px;
 	transition: transform 0.2s;
@@ -999,7 +1110,7 @@ canvas {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background: rgba(0, 0, 0, 0.9);
+	background: rgba(0, 0, 0, 0.8);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1012,46 +1123,45 @@ canvas {
 
 .close-btn {
 	position: absolute;
-	top: 20px;
-	right: 30px;
-	font-size: 30px;
-	color: white;
+	top: 17%;
+	right: 33%;
 	cursor: pointer;
 	z-index: 1000;
+	max-width: 6rem;
+}
+
+.close-btn img {
+	width: 100%;
+	height: 100%;
 }
 
 .carousel {
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	transition: transform 0.25s linear;
 	width: 100%;
-	max-width: 1000px;
 	overflow: visible;
 	position: relative;
-	padding: 0 20px;
-	gap: 10px;
+	height: clamp(300px, 60vh, 500px);
 }
 
 .carousel video {
-	width: 120px;
-	height: 180px;
-	object-fit: cover;
-	border-radius: 10px;
-	opacity: 0.5;
-	transition: all 0.4s ease;
+	width: 60vw;
+	max-width: 300px;
+	height: auto;
 	flex-shrink: 0;
-	position: relative;
+	margin: 0 10px;
+	border-radius: 10px;
+	object-fit: cover;
+	opacity: 0.6;
+	transform: scale(0.7);
+	transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .carousel video.active {
-	width: 300px;
-	height: 450px;
+	transform: scale(1.1);
 	opacity: 1;
+	border: 2px solid #443d329e;
 	z-index: 10;
-	transform: scale(1);
-	border: 2px solid white;
-	order: 0;
-	margin: 0;
 }
 
 .carousel video.left {
@@ -1071,8 +1181,14 @@ canvas {
 }
 
 #orange10-modal {
-	width: 700px;
+	width: 50vw;
+	text-align: center;
+	border-radius: 3rem;
+	top: 30%;
+	left: 53%;
+	z-index: 3;
 }
+
 .portraits-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -1120,17 +1236,19 @@ canvas {
 
 .portraits-modal__content {
 	display: flex;
-	max-width: 900px;
+	max-width: 95vw;
 	width: 100%;
 	background: url('media/modal-window.svg') no-repeat center center;
 	background-size: cover;
-	border-radius: 10px;
+	border-radius: 6rem;
 	overflow: hidden;
 	position: relative;
+	max-height: 95vh;
+	height: 100%;
 }
 
 .portraits-modal__photo-container {
-	width: 300px;
+	width: 30%;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
@@ -1157,19 +1275,18 @@ canvas {
 	flex: 1;
 	padding: 20px;
 	overflow-y: auto;
-	max-height: 500px;
 	color: #333;
 	line-height: 1.6;
 }
 
 .portraits-modal__close {
 	position: absolute;
-	top: 15px;
-	left: 15px;
-	width: 80px;
-	height: 80px;
+	top: 2%;
+	left: 2%;
+	width: 7vw;
+	height: 11vh;
 	background: url('media/close-icon.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -1189,30 +1306,23 @@ canvas {
 	width: 5.36%;
 	height: auto;
 	z-index: 1;
+	isolation: isolate;
+}
+.caterpillar img {
+	width: 100%;
+	height: 100%;
 }
 
-.bird {
-	position: absolute;
-	left: 37.64%;
-	top: 33.33%;
-	width: 8.79%;
-	height: auto;
-	z-index: 1;
-}
-
-.caterpillar-modal,
-.bird-modal {
+.caterpillar-modal {
 	display: none;
 	position: absolute;
-	bottom: 100%;
-	left: 50%;
+	top: -250%;
+	left: 38%;
 	transform: translateX(-50%);
 	background: url('media/modal-window.svg') no-repeat center center;
-	background-size: cover;
-	border: 1px solid #ccc;
+	background-size: 100% 100%;
 	padding: 10px;
-	border-radius: 5px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 0.5rem;
 	z-index: 20;
 	font-family: 'Normalidad';
 	font-style: normal;
@@ -1220,20 +1330,60 @@ canvas {
 	line-height: 130%;
 	font-size: 1.5vw;
 	color: #2e2c24;
+	width: 368%;
+	height: 228%;
+	text-align: center;
 }
 
-.caterpillar:hover .caterpillar-modal,
-.bird:hover .bird-modal {
-	display: block;
+.bird {
+	position: absolute;
+	left: 36.6%;
+	top: 33.3%;
+	width: 8.79%;
+	height: auto;
+	z-index: 1;
 }
 
+.bird img {
+	width: 100%;
+	height: 100%;
+}
+
+.bird-modal {
+	display: none;
+	position: absolute;
+	top: -201%;
+	left: 50%;
+	transform: translateX(-50%);
+	background: url('media/modal-window.svg') no-repeat center center;
+	background-size: 100% 100%;
+	padding: 10px;
+	border-radius: 0.5rem;
+	z-index: 20;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	font-size: 1.5vw;
+	color: #2e2c24;
+	width: 276%;
+	height: 178%;
+	text-align: center;
+}
+
+.caterpillar-modal p,
+.bird-modal p {
+	margin-top: 1%;
+	margin-bottom: 1%;
+	font-family: 'Normalidad';
+}
 /* Sign styles */
 #help-button {
 	position: absolute;
-	left: 47.3%;
-	top: 78.44%;
-	width: 20vw;
-	height: auto;
+	left: 46.3%;
+	top: 80.4%;
+	width: 10vw;
+	height: 15vh;
 	background: url('media/help_sign.svg') no-repeat center center;
 	background-size: contain;
 	border: none;
@@ -1241,13 +1391,13 @@ canvas {
 	padding: 0;
 	z-index: 2;
 }
+
 #help-button:hover {
 	filter: brightness(1.5);
 }
 
 .sign-area {
 	position: absolute;
-	bottom: 350px;
 	left: 68%;
 	top: 57.44%;
 	transform: translateX(-50%);
@@ -1256,7 +1406,7 @@ canvas {
 
 .sixyo-sign {
 	position: relative;
-	width: 100%;
+	width: 10vw;
 	height: auto;
 	z-index: 1;
 }
@@ -1264,11 +1414,21 @@ canvas {
 /* Other buttons styles */
 #open-cards-button {
 	background: url('media/button.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	color: #fff;
 	border: none;
-	border-radius: 5px;
+	border-radius: 11px;
 	cursor: pointer;
+	width: 70%;
+	height: 25%;
+	top: 64%;
+	position: absolute;
+	left: 15%;
+	font-family: 'Normalidad';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.5vw;
+	text-align: center;
 }
 
 #open-cards-button:hover {
@@ -1281,8 +1441,11 @@ canvas {
 	width: 120px;
 	color: #fff;
 	border: none;
-	border-radius: 5px;
+	border-radius: 13px;
 	cursor: pointer;
+	width: 13vw;
+	height: 5vh;
+	margin-top: 3%;
 }
 
 #call-button:hover {
@@ -1305,7 +1468,7 @@ canvas {
 
 .card-selection-content {
 	background: url('media/modal-window.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	padding: 20px;
 	border-radius: 20px;
 	position: relative;
@@ -1317,26 +1480,45 @@ canvas {
 	line-height: 130%;
 	font-size: 1.5vw;
 	color: #2e2c24;
+	max-width: 90vw;
+	max-height: 90vh;
 }
 
 .card-selection .close {
 	position: absolute;
-	top: 10px;
-	right: 30px;
+	top: 3%;
+	right: 4%;
 	cursor: pointer;
 	z-index: 200;
+	width: 7%;
+}
+
+.card-selection-content h2 {
+	font-size: 3vw;
+	text-align: center;
+}
+.card-selection-content p {
+	font-size: 3.2vw;
+	width: 53%;
+	position: relative;
+	left: 23%;
+	line-height: 99%;
+	margin-bottom: 12%;
 }
 
 .card-selection .close img {
-	width: 70px;
-	height: 70px;
-	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .cards {
 	display: flex;
-	flex-wrap: wrap;
 	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	margin: 0;
 }
 
 .card {
@@ -1345,31 +1527,45 @@ canvas {
 	cursor: pointer;
 	border: 2px solid transparent;
 	transition: filter 0.3s, border-color 0.3s;
+	flex: 1 1 auto;
+	min-width: 0;
+	max-width: calc(25% - 20px);
+}
+
+.card img {
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+	max-height: 100%;
 }
 
 .card.selected {
-	filter: brightness(1.2);
+	opacity: 1;
+	transform: translateY(-25px);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:not(.selected) {
-	filter: brightness(0.5);
+	opacity: 0.5;
 }
 
 #download-selected-card {
-	margin-top: 10px;
-	padding: 5px 10px;
 	background: url('media/button.svg') no-repeat center center;
-	background-size: cover;
+	background-size: 100% 100%;
 	color: #fff;
 	border: none;
-	border-radius: 5px;
+	border-radius: 21px;
 	cursor: pointer;
-	height: 3.5rem;
+	height: 6vh;
 	font-family: 'Normalidad';
 	font-style: normal;
 	font-weight: 400;
-	line-height: 130%;
-	font-size: 1.5vw;
+	font-size: 2.5vw;
+	padding: 0 10px;
+	bottom: 6%;
+	position: absolute;
+	width: 13vw;
+	left: 43%;
 }
 
 #download-selected-card:disabled {
@@ -1411,11 +1607,11 @@ canvas {
 
 /* Audio toggle styles */
 #audio-toggle {
-	position: absolute;
-	top: 80%;
-	right: 5%;
-	width: 2rem;
-	height: 2rem;
+	position: fixed;
+	bottom: 8%;
+	right: 2%;
+	width: 6vw;
+	height: 7vh;
 	background: url('media/soundBtn.svg') no-repeat center center;
 	background-size: contain;
 	color: #fff;
@@ -1435,62 +1631,11 @@ canvas {
 		width: 100%;
 		margin: 0 auto;
 	}
-
-	.orange-modal {
-		width: 300px;
-		padding: 10px;
-	}
-
-	#help-button,
-	#return-button,
-	#call-button,
-	#open-cards-button {
-		width: 120px;
-		height: 60px;
-	}
-
-	#orange1,
-	#orange2,
-	#orange3,
-	.caterpillar,
-	.bird {
-		width: 50px;
-	}
-
-	#donation-svg {
-		width: 80%;
-		height: auto;
-	}
 }
 
 @media (min-width: 1024px) {
 	.container {
 		width: 100%;
-	}
-
-	.orange-modal {
-		width: 400px;
-		padding: 15px;
-	}
-
-	#help-button,
-	#return-button,
-	#call-button,
-	#open-cards-button {
-		width: 140px;
-		height: 70px;
-	}
-
-	#orange1,
-	#orange2,
-	#orange3,
-	.caterpillar,
-	.bird {
-		width: 70px;
-	}
-
-	#donation-svg {
-		width: 70%;
-		height: auto;
+		margin: 0 auto;
 	}
 }

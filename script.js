@@ -41,21 +41,61 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.body.classList.remove('no-scroll')
 		})
 
-	document.getElementById('orange5').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth // Trigger reflow
-		this.classList.add('clicked')
-	})
-	document.getElementById('orange4').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth
-		this.classList.add('clicked')
-	})
+	const oranges = ['orange4', 'orange5', 'orange6']
 
-	document.getElementById('orange6').addEventListener('click', function () {
-		this.classList.remove('clicked')
-		void this.offsetWidth
-		this.classList.add('clicked')
+	oranges.forEach(id => {
+		const el = document.getElementById(id)
+		if (!el) return
+
+		let isTouch = false
+		let hoverTimeout = null
+
+		el.addEventListener('mouseenter', () => {
+			if (!isTouch) {
+				el.classList.add('hovered')
+
+				clearTimeout(hoverTimeout)
+				hoverTimeout = setTimeout(() => {
+					el.classList.remove('hovered')
+				}, 6000)
+			}
+		})
+
+		el.addEventListener('mouseleave', () => {
+			if (!isTouch) {
+				clearTimeout(hoverTimeout)
+				el.classList.remove('hovered')
+			}
+		})
+
+		const triggerAnimation = () => {
+			const img = el.querySelector('img')
+
+			img.style.animation = 'none'
+			img.offsetHeight
+			img.style.animation = ''
+
+			el.classList.remove('hovered')
+			el.classList.remove('clicked')
+
+			void el.offsetWidth
+			el.classList.add('clicked')
+
+			setTimeout(() => el.classList.remove('clicked'), 5000)
+		}
+
+		el.addEventListener(
+			'touchstart',
+			() => {
+				isTouch = true
+			},
+			{ passive: true }
+		)
+
+		el.addEventListener('click', e => {
+			e.preventDefault()
+			triggerAnimation()
+		})
 	})
 
 	const helpButton = document.getElementById('help-button')
@@ -114,32 +154,98 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 	const pairs = [
-		{ trigger: '.caterpillar', modal: '.caterpillar-modal' },
-		{ trigger: '.bird', modal: '.bird-modal' },
+		{
+			trigger: '.caterpillar',
+			modal: '.caterpillar-modal',
+			imgSelector: 'img',
+			defaultImg: 'media/caterpillar.svg',
+			hoverImg: 'media/caterpillar_hover.png',
+			clickImg: 'media/caterpillar_hover.png',
+		},
+		{
+			trigger: '.bird',
+			modal: '.bird-modal',
+			imgSelector: 'img',
+			defaultImg: 'media/bird.svg',
+			hoverImg: 'media/bird_hover.png',
+			clickImg: 'media/bird_hover.png',
+		},
 	]
 
-	pairs.forEach(({ trigger, modal }) => {
-		const triggerEl = document.querySelector(trigger)
-		const modalEl = document.querySelector(modal)
-
-		if (triggerEl && modalEl) {
-			triggerEl.addEventListener('click', function (e) {
-				e.stopPropagation()
-				modalEl.style.display = 'block'
-			})
-
-			modalEl.addEventListener('click', function (e) {
-				e.stopPropagation()
-			})
-		}
-	})
-
-	document.addEventListener('click', function () {
-		pairs.forEach(({ modal }) => {
+	pairs.forEach(
+		({ trigger, modal, imgSelector, defaultImg, hoverImg, clickImg }) => {
+			const triggerEl = document.querySelector(trigger)
 			const modalEl = document.querySelector(modal)
-			if (modalEl) modalEl.style.display = 'none'
-		})
-	})
+			const imgEl = triggerEl?.querySelector(imgSelector)
+
+			if (!triggerEl || !modalEl || !imgEl) return
+
+			let isTouchDevice =
+				'ontouchstart' in window || navigator.maxTouchPoints > 0
+			let isOver = false
+
+			const showModal = () => {
+				modalEl.style.display = 'block'
+				triggerEl.style.zIndex = '1000'
+			}
+			const hideModal = () => {
+				modalEl.style.display = 'none'
+				triggerEl.style.zIndex = '1'
+			}
+			const checkHide = () => {
+				if (!isOver) hideModal()
+			}
+
+			const enterHandler = () => {
+				isOver = true
+				showModal()
+				imgEl.src = hoverImg
+			}
+			const leaveHandler = () => {
+				isOver = false
+				setTimeout(checkHide, 100)
+				imgEl.src = defaultImg
+			}
+
+			let resetImgTimeout
+
+			if (isTouchDevice) {
+				triggerEl.addEventListener('click', e => {
+					e.stopPropagation()
+					showModal()
+					imgEl.src = clickImg
+
+					clearTimeout(resetImgTimeout)
+
+					resetImgTimeout = setTimeout(() => {
+						imgEl.src = defaultImg
+					}, 200)
+				})
+
+				modalEl.addEventListener('click', e => e.stopPropagation())
+				document.addEventListener('click', () => {
+					hideModal()
+					clearTimeout(resetImgTimeout)
+					imgEl.src = defaultImg
+				})
+			} else {
+				triggerEl.addEventListener('mouseenter', enterHandler)
+				triggerEl.addEventListener('mouseleave', leaveHandler)
+				modalEl.addEventListener('mouseenter', enterHandler)
+				modalEl.addEventListener('mouseleave', leaveHandler)
+
+				triggerEl.addEventListener('click', e => {
+					e.stopPropagation()
+					modalEl.style.display =
+						modalEl.style.display === 'block' ? 'none' : 'block'
+					imgEl.src = clickImg
+					setTimeout(() => {
+						imgEl.src = hoverImg
+					}, 200)
+				})
+			}
+		}
+	)
 })
 
 // Confetti
@@ -323,10 +429,9 @@ if (pinata) {
 			const hintElement = document.createElement('div')
 			hintElement.textContent = 'Привет, я даю подарки!'
 			hintElement.style.position = 'absolute'
-			hintElement.style.top = pinata.clientHeight * 1.5 + 'px'
-			hintElement.style.left = pinata.clientWidth * 0.7 + 'px'
-			hintElement.style.transform =
-				'translateX(' + pinata.clientWidth * 0.7 + 'px)'
+			hintElement.style.top = '45%'
+			hintElement.style.left = '25%'
+			hintElement.style.transform = 'translateX(-25%)'
 			hintElement.style.backgroundImage = 'url("media/modal-window.svg")'
 			hintElement.style.backgroundSize = 'contain'
 			hintElement.style.backgroundRepeat = 'no-repeat'
@@ -364,7 +469,7 @@ function showPopup() {
 	popupShown = true
 	const promo = getRandomPromoCode()
 	const promoElement = document.createElement('div')
-	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5rem;border-radius: 5rem;">${promo.code}<img src="media/copy.png" alt="Copy" style="width: 1rem; height: 1rem; margin-left: 0.5rem;"></span><br /><br />Промокод от "${promo.company}"!`
+	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5vw;border-radius: 3rem;font-size: 2.2vw;margin-bottom: 1vw;">${promo.code}<img src="media/copy.png" alt="Copy" style="height: 2.2vw; margin-left: 0.5vw;"></span><br />Промокод от "${promo.company}"!`
 	promoElement.addEventListener('click', () => {
 		navigator.clipboard.writeText(promo.code).then(() => {
 			alert('Промокод скопирован в буфер обмена!')
@@ -775,10 +880,40 @@ function getCurrentRotation(element) {
 document.querySelectorAll('.orange').forEach(orange => {
 	const modalId = orange.getAttribute('data-modal')
 	const modal = document.getElementById(modalId)
+
 	if (modal) {
-		orange.addEventListener('click', function () {
-			modal.classList.toggle('active')
-		})
+		let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
+		if (isTouchDevice) {
+			orange.addEventListener('click', () => {
+				modal.classList.toggle('active')
+			})
+		} else {
+			const showModal = () => modal.classList.add('active')
+			const hideModal = () => modal.classList.remove('active')
+
+			let isOver = false
+			const checkHide = () => {
+				if (!isOver) hideModal()
+			}
+
+			const enterHandler = () => {
+				isOver = true
+				showModal()
+			}
+			const leaveHandler = () => {
+				isOver = false
+				setTimeout(checkHide, 100)
+			}
+
+			orange.addEventListener('mouseenter', enterHandler)
+			orange.addEventListener('mouseleave', leaveHandler)
+			modal.addEventListener('mouseenter', enterHandler)
+			modal.addEventListener('mouseleave', leaveHandler)
+			orange.addEventListener('click', () => {
+				modal.classList.toggle('active')
+			})
+		}
 	}
 })
 
@@ -1067,56 +1202,59 @@ closeBtn.addEventListener('click', () => {
 	carousel.innerHTML = ''
 })
 
+function renderCarousel(activeIndex) {
+	const videoElems = carousel.querySelectorAll('video')
+
+	videoElems.forEach((video, i) => {
+		video.classList.remove('active')
+
+		if (i === activeIndex) {
+			video.classList.add('active')
+			video.controls = true
+			video.muted = false
+			video.play()
+		} else {
+			video.controls = false
+			video.muted = true
+			video.pause()
+		}
+	})
+
+	// плавно сдвигаем всю карусель влево
+	const videoWidth = videoElems[0].offsetWidth + 20 // видео + маржины
+	const offset =
+		activeIndex * videoWidth - (carousel.offsetWidth - videoWidth) / 2
+	const maxOffset =
+		videoElems.length * videoWidth - carousel.parentElement.offsetWidth
+	const safeOffset = Math.min(offset, maxOffset)
+	carousel.style.transform = `translateX(${-safeOffset}px)`
+
+	carousel.style.transform = `translateX(${-offset}px)`
+}
+
 function openModal(index) {
 	modal.classList.remove('hidden')
+
+	// если впервые открыли — создаём видео
+	if (carousel.children.length === 0) {
+		for (let i = 0; i < videoSources.length; i++) {
+			createVideoElement(i)
+		}
+	}
+
+	currentIndex = index
 	renderCarousel(index)
 }
 
-function renderCarousel(activeIndex) {
-	carousel.innerHTML = ''
-
-	for (let i = Math.max(0, activeIndex - 2); i < activeIndex; i++) {
-		createVideoElement(i, 'left')
-	}
-
-	createVideoElement(activeIndex, 'active')
-
-	for (
-		let i = activeIndex + 1;
-		i <= Math.min(videoSources.length - 1, activeIndex + 2);
-		i++
-	) {
-		createVideoElement(i, 'right')
-	}
-
-	setTimeout(() => {
-		const activeVideo = carousel.querySelector('.active')
-		if (activeVideo) {
-			activeVideo.scrollIntoView({
-				behavior: 'smooth',
-				block: 'nearest',
-				inline: 'center',
-			})
-		}
-	}, 50)
-}
-
-function createVideoElement(index, positionClass) {
+function createVideoElement(index) {
 	const vid = document.createElement('video')
 	vid.src = videoSources[index]
-	vid.classList.add(positionClass)
-	vid.muted = positionClass !== 'active'
+	vid.dataset.index = index
+	vid.classList.add('carousel-video')
+	vid.muted = true
 	vid.loop = true
 	vid.playsInline = true
-	vid.autoplay = true
-
-	if (positionClass === 'active') {
-		vid.controls = true
-		vid.muted = false
-		vid.play()
-	} else {
-		vid.controls = false
-	}
+	vid.autoplay = false
 
 	vid.addEventListener('click', () => {
 		currentIndex = index
@@ -1192,4 +1330,36 @@ portraitItems.forEach(item => {
 
 closeBtnPt.addEventListener('click', () => {
 	modalPt.classList.remove('portraits-modal--active')
+})
+
+// Gray all except hovered
+const oranges = document.querySelectorAll('.orange')
+
+function grayAllExcept(except = null) {
+	oranges.forEach(orange => {
+		const img = orange.querySelector('img')
+		if (orange === except) {
+			img.classList.remove('gray')
+		} else {
+			img.classList.add('gray')
+		}
+	})
+}
+
+function clearGray() {
+	oranges.forEach(orange => {
+		orange.querySelector('img').classList.remove('gray')
+	})
+}
+
+document.querySelectorAll('.container *').forEach(el => {
+	if (!el.closest('.orange')) {
+		el.addEventListener('mouseenter', () => grayAllExcept())
+		el.addEventListener('mouseleave', clearGray)
+	}
+})
+
+oranges.forEach(orange => {
+	orange.addEventListener('mouseenter', () => grayAllExcept(orange))
+	orange.addEventListener('mouseleave', clearGray)
 })

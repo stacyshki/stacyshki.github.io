@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>С Днём Рождения нас!!</title>
+		<title>С Днём Рождения нас!</title>
 		<link rel="stylesheet" href="styles.css" />
 		<link rel="icon" href="media/favicon.ico" class="icon" />
 		<link rel="preload" as="image" href="media/loading_bg.png" />
@@ -67,8 +67,8 @@
 			<div class="bird">
 				<img src="media/bird.svg" alt="Птичка" />
 				<div class="bird-modal">
-					<p>Выбери открытку!</p>
-					<button id="open-cards-button">Посмотреть открытки</button>
+					<p>Привет, я отправляю добрые открытки тем, кому нужна поддержка.</p>
+					<button id="open-cards-button">Отправить открытку</button>
 				</div>
 			</div>
 			<button id="help-button" aria-label="Help"></button>
@@ -122,9 +122,8 @@
 						<img src="media/cards/card_4.svg" alt="Карточка 4" />
 					</div>
 				</div>
-				<button id="download-selected-card" disabled>
-					Скачать выбранную открытку
-				</button>
+				<p>Скачай открытку и отправь близкому человеку</p>
+				<button id="download-selected-card" disabled>Скачать</button>
 			</div>
 		</div>
 		<div id="orientation-prompt">
@@ -201,19 +200,11 @@
 			</p>
 			<button class="team-help-button">Хочу помочь</button>
 		</div>
-		<div class="orange-modal" id="orange3-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
-		</div>
+		<div class="orange-modal" id="orange3-modal"></div>
 		<div class="orange-modal" id="orange7-modal">
 			<div class="orange7-modal-content">
 				<span class="close-modal">
-					<img
-						src="media/close-icon.svg"
-						alt="Закрыть"
-						style="width: 5rem; height: 5rem"
-					/>
+					<img src="media/close-icon.svg" alt="Закрыть" />
 				</span>
 
 				<h2>Раскрась апельсин</h2>
@@ -296,9 +287,7 @@
 			</div>
 		</div>
 		<div class="orange-modal" id="orange9-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
+			<h2>6 ярких событий от президента Фонда Мирославы Сергеенко</h2>
 			<div class="button-grid">
 				<img
 					src="media/vid-btns/button1.png"
@@ -339,13 +328,13 @@
 			</div>
 		</div>
 		<div id="video-modal" class="video-modal hidden">
-			<span class="close-btn">&times;</span>
+			<span class="close-btn">
+				<img src="media/close-icon.svg" alt="Закрыть" />
+			</span>
 			<div class="carousel" id="carousel"></div>
 		</div>
 		<div class="orange-modal" id="orange10-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
+			<h2>Истории благополучателей</h2>
 			<div class="portraits-grid">
 				<img
 					src="media/portraits/portrait1.png"
