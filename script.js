@@ -951,7 +951,7 @@ document
 	let currentColor = 'orange'
 
 	const orangeImg = new Image()
-	orangeImg.src = 'media/color_orange.svg'
+	orangeImg.src = 'media/paint_game/paint_orange.png'
 
 	orangeImg.onload = () => {
 		drawBase()
@@ -1057,7 +1057,7 @@ document
 
 		const bgImage = new Image()
 		bgImage.crossOrigin = 'anonymous'
-		bgImage.src = 'media/cGame_sheet.png'
+		bgImage.src = 'media/paint_game/paper.png'
 
 		bgImage.onload = function () {
 			tempCtx.drawImage(bgImage, 0, 0, FIGMA.bgWidth, FIGMA.bgHeight)
