@@ -29,7 +29,12 @@
 			<div class="orange" id="orange1" data-modal="orange1-modal">
 				<img src="media/orange.svg" alt="Апельсин 1" />
 			</div>
-			<div class="orange" id="orange2" data-modal="orange2-modal">
+			<div
+				class="orange"
+				id="orange2"
+				data-modal="orange2-modal"
+				data-tooltip="О фонде"
+			>
 				<img src="media/orange.svg" alt="Апельсин 2" />
 			</div>
 			<div class="orange" id="orange3" data-modal="orange3-modal">
@@ -44,10 +49,20 @@
 			<div class="orange" id="orange6">
 				<img src="media/orange.svg" alt="Апельсин 6" />
 			</div>
-			<div class="orange" id="orange7" data-modal="orange7-modal">
+			<div
+				class="orange"
+				id="orange7"
+				data-modal="orange7-modal"
+				data-tooltip="Раскраска"
+			>
 				<img src="media/orange.svg" alt="Апельсин 7" />
 			</div>
-			<div class="orange" id="orange8" data-modal="orange8-modal">
+			<div
+				class="orange"
+				id="orange8"
+				data-modal="orange8-modal"
+				data-tooltip="Колесо добрых дел"
+			>
 				<img src="media/orange.svg" alt="Апельсин 8" />
 			</div>
 			<div class="orange" id="orange9" data-modal="orange9-modal">
@@ -134,9 +149,6 @@
 		</div>
 		<!-- Modals orange -->
 		<div class="orange-modal" id="orange1-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
 			<h2>Уже собрали на помощь</h2>
 			<p>Вставить сюда iFrame</p>
 			<div class="buttons-wrapper">
@@ -152,27 +164,80 @@
 			<span id="close-orange1-modal-more">
 				<img src="media/close-icon.svg" alt="Закрыть" />
 			</span>
-			<h2>Каждый рубль — это шаг к возвращению к жизни</h2>
+			<h2>Каждый рубль — это шаг к возвращению к жизни</h2>
 			<p>
-				Мы собираем 6 000 000 рублей, чтобы помочь онкопациентам не просто
-				выжить, а вернуться к полноценной жизни после лечения.
+				Мы собираем 6 000 000 рублей, чтобы помочь онкопациентам не просто
+				выжить, а вернуться к полноценной жизни после лечения.
 			</p>
+
 			<h3>Средняя стоимость помощи</h3>
 			<p>
 				Один пациент часто нуждается в нескольких видах поддержки – например, в
-				реабилитации, продуктах и проезде.
+				реабилитации, продуктах и проезде.
 			</p>
-			<img src="media/help-cost.png" alt="Средняя стоимость помощи" />
+
+			<div class="cards-wrapper">
+				<div class="card-row">
+					<div class="card large-card">
+						<img src="media/icons/icon_rehab.png" alt="1" />
+						<p>Реабилитация после лечения</p>
+						<span>38 814 ₽</span>
+					</div>
+					<div class="card large-card">
+						<img src="media/icons/icon_house.png" alt="2" />
+						<p>Проживание рядом с клиникой</p>
+						<span>11 380 ₽</span>
+					</div>
+				</div>
+				<div class="card-row">
+					<div class="card small-card">
+						<img src="media/icons/icon_airplane.png" alt="3" />
+						<p>Проезд для лечения</p>
+						<span>11 100 ₽</span>
+					</div>
+					<div class="card small-card">
+						<img src="media/icons/icon_airplane.png" alt="4" />
+						<p>Продуктовая помощь семье</p>
+						<span>4 000 ₽</span>
+					</div>
+					<div class="card small-card">
+						<img src="media/icons/icon_rehab.png" alt="5" />
+						<p>Второе мнение врача</p>
+						<span>3 500 ₽</span>
+					</div>
+				</div>
+			</div>
+
 			<p>
 				6 миллионов — это не просто цифра. Это десятки людей, которые смогут не
-				только победить рак, но и вернуться к работе, семье, мечтам.
+				только победить рак, но и вернуться к работе, семье, мечтам.
 			</p>
+
 			<h3>Почему важно собрать эту сумму?</h3>
-			<img src="media/pay-cost.png" alt="Почему важно собрать эту сумму?" />
-			<h3>Ваше пожертвование заполнит шкалу — и чью-то жизнь возможностями</h3>
+
+			<div class="text-cards-row">
+				<div class="text-card">
+					<h4>Реабилитация — это не роскошь, а необходимость</h4>
+					<p>Без неё даже успешное лечение может привести к инвалидности</p>
+				</div>
+				<div class="text-card">
+					<h4>Гибкость помощи</h4>
+					<p>
+						Кто-то нуждается только в консультации врача (3 500 ₽), а кому-то
+						критично оплатить и реабилитацию, и проезд. Мы помогаем всем
+					</p>
+				</div>
+				<div class="text-card">
+					<h4>Эффект «волны»</h4>
+					<p>Помощь одному человеку = поддержка всей его семьи</p>
+				</div>
+			</div>
+
+			<h3>Ваше пожертвование заполнит шкалу — и чью-то жизнь возможностями</h3>
 			<p>Вставить сюда iFrame</p>
 			<button class="team-help-button-more">Хочу помочь</button>
 		</div>
+
 		<div class="orange-modal" id="orange2-modal">
 			<span class="close-modal">
 				<img src="media/close-icon.svg" alt="Закрыть" />
@@ -266,11 +331,14 @@
 				<div class="pointer"></div>
 			</div>
 
-			<button id="spinBtn">Крутить</button>
-			<button id="openSharePopup" style="display: none">Поделиться</button>
+			<div class="center-button-wrapper">
+				<button id="spinBtn">Крутить</button>
+				<button id="openSharePopup" style="display: none">Поделиться</button>
+			</div>
 
 			<div id="sharePopup" class="share-popup hidden">
 				<div class="share-popup-content">
+					<button class="close-share">×</button>
 					<p>Поделиться в:</p>
 					<div class="share-buttons">
 						<a id="tgLink" target="_blank"

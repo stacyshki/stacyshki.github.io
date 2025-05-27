@@ -48,25 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!el) return
 
 		let isTouch = false
-		let hoverTimeout = null
 
-		el.addEventListener('mouseenter', () => {
-			if (!isTouch) {
-				el.classList.add('hovered')
-
-				clearTimeout(hoverTimeout)
-				hoverTimeout = setTimeout(() => {
-					el.classList.remove('hovered')
-				}, 6000)
-			}
-		})
-
-		el.addEventListener('mouseleave', () => {
-			if (!isTouch) {
-				clearTimeout(hoverTimeout)
-				el.classList.remove('hovered')
-			}
-		})
+		el.setAttribute('data-tooltip', 'Нажми на меня!')
 
 		const triggerAnimation = () => {
 			const img = el.querySelector('img')
@@ -291,18 +274,15 @@ function launchConfetti() {
 	const ctx = canvas.getContext('2d')
 
 	const pinataArea = document.querySelector('.pinata-area')
-	canvas.width = pinataArea.offsetWidth
-	canvas.height = pinataArea.offsetHeight
+	canvas.width = pinataArea.offsetWidth * 5
+	canvas.height = pinataArea.offsetHeight * 5
 
 	const pinataRect = pinata.getBoundingClientRect()
-	const pinataCenterX =
-		pinataRect.left -
-		pinataArea.getBoundingClientRect().left +
-		pinataRect.width / 2
-	const pinataCenterY =
-		pinataRect.top -
-		pinataArea.getBoundingClientRect().top +
-		pinataRect.height / 2
+	const canvasRect = canvas.getBoundingClientRect()
+	const pinataCenterX = pinataRect.left - canvasRect.left + pinataRect.width / 2
+	const pinataCenterY = pinataRect.top - canvasRect.top + pinataRect.height / 2
+
+	console.log(pinataCenterX, pinataCenterY)
 
 	const confettiImages = []
 	for (let i = 1; i <= 9; i++) {
@@ -432,11 +412,11 @@ if (pinata) {
 			hintElement.style.top = '45%'
 			hintElement.style.left = '25%'
 			hintElement.style.transform = 'translateX(-25%)'
-			hintElement.style.backgroundImage = 'url("media/modal-window.svg")'
+			hintElement.style.backgroundImage = 'url("media/modal-window.png")'
 			hintElement.style.backgroundSize = 'contain'
 			hintElement.style.backgroundRepeat = 'no-repeat'
 			hintElement.style.backgroundPosition = 'center'
-			hintElement.style.backgroundSize = '100% 100%'
+			hintElement.style.backgroundSize = '450% auto'
 			hintElement.style.color = '#2E2C24'
 			hintElement.style.padding = '10px'
 			hintElement.style.borderRadius = '5px'
@@ -469,7 +449,7 @@ function showPopup() {
 	popupShown = true
 	const promo = getRandomPromoCode()
 	const promoElement = document.createElement('div')
-	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5vw;border-radius: 3rem;font-size: 2.2vw;margin-bottom: 1vw;">${promo.code}<img src="media/copy.png" alt="Copy" style="height: 2.2vw; margin-left: 0.5vw;"></span><br />Промокод от "${promo.company}"!`
+	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5vw;border-radius: 3rem;font-size: 2.2vw;margin-bottom: 1vw;">${promo.code}<img src="media/copy.png" alt="Copy" style="height: 2.2vw; margin-left: 0.5vw;"></span><br />Промокод от «${promo.company}»!`
 	promoElement.addEventListener('click', () => {
 		navigator.clipboard.writeText(promo.code).then(() => {
 			alert('Промокод скопирован в буфер обмена!')
@@ -645,10 +625,16 @@ class ConfettiManager {
 	}
 
 	launch(clickCount) {
-		// Recalculate pinata's position each time
-		const pinataRect = this.canvas.getBoundingClientRect()
-		const pinataCenterX = pinataRect.left + pinataRect.width / 2
-		const pinataCenterY = pinataRect.top + pinataRect.height / 2
+		const pinata = document.getElementById('pinata')
+		const canvas = this.canvas
+
+		const pinataRect = pinata.getBoundingClientRect()
+		const canvasRect = canvas.getBoundingClientRect()
+
+		const pinataCenterX =
+			pinataRect.left - canvasRect.left + pinataRect.width / 2
+		const pinataCenterY =
+			pinataRect.top - canvasRect.top + pinataRect.height / 2
 
 		const baseConfettiCount = 8
 		const additionalConfetti = clickCount * 2
@@ -656,8 +642,8 @@ class ConfettiManager {
 
 		for (let i = 0; i < confettiCount; i++) {
 			this.confetti.push({
-				x: pinataCenterX - this.canvas.offsetLeft,
-				y: pinataCenterY - this.canvas.offsetTop,
+				x: pinataCenterX,
+				y: pinataCenterY,
 				size: randomBetween(20, 40),
 				angle: randomBetween(0, 2 * Math.PI),
 				speed: randomBetween(1, 3),
@@ -883,33 +869,51 @@ document.querySelectorAll('.orange').forEach(orange => {
 
 	if (modal) {
 		let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+		const isDisabledModal = [
+			'orange2-modal',
+			'orange7-modal',
+			'orange8-modal',
+		].includes(modalId)
 
 		if (isTouchDevice) {
 			orange.addEventListener('click', () => {
 				modal.classList.toggle('active')
 			})
 		} else {
-			const showModal = () => modal.classList.add('active')
-			const hideModal = () => modal.classList.remove('active')
+			if (!isDisabledModal) {
+				const showModal = () => modal.classList.add('active')
+				const hideModal = () => modal.classList.remove('active')
 
-			let isOver = false
-			const checkHide = () => {
-				if (!isOver) hideModal()
+				let isOver = false
+				const checkHide = () => {
+					if (!isOver) hideModal()
+				}
+
+				const enterHandler = () => {
+					isOver = true
+					showModal()
+				}
+				const leaveHandler = () => {
+					isOver = false
+					setTimeout(checkHide, 100)
+				}
+
+				orange.addEventListener('mouseenter', enterHandler)
+				orange.addEventListener('mouseleave', leaveHandler)
+				modal.addEventListener('mouseenter', enterHandler)
+				modal.addEventListener('mouseleave', leaveHandler)
+			} else {
+				let tooltipText = ''
+
+				if (modalId === 'orange2-modal') tooltipText = 'О фонде'
+				else if (modalId === 'orange7-modal') tooltipText = 'Раскраска'
+				else if (modalId === 'orange8-modal') tooltipText = 'Колесо добрых дел'
+
+				if (tooltipText) {
+					orange.setAttribute('data-tooltip', tooltipText)
+				}
 			}
 
-			const enterHandler = () => {
-				isOver = true
-				showModal()
-			}
-			const leaveHandler = () => {
-				isOver = false
-				setTimeout(checkHide, 100)
-			}
-
-			orange.addEventListener('mouseenter', enterHandler)
-			orange.addEventListener('mouseleave', leaveHandler)
-			modal.addEventListener('mouseenter', enterHandler)
-			modal.addEventListener('mouseleave', leaveHandler)
 			orange.addEventListener('click', () => {
 				modal.classList.toggle('active')
 			})
@@ -1167,10 +1171,10 @@ openSharePopup.addEventListener('click', () => {
 	sharePopup.classList.remove('hidden')
 })
 
-window.addEventListener('click', e => {
-	if (e.target === sharePopup) {
-		sharePopup.classList.add('hidden')
-	}
+const closeShareBtn = document.querySelector('.close-share')
+
+closeShareBtn.addEventListener('click', () => {
+	sharePopup.classList.add('hidden')
 })
 
 // Video
@@ -1352,8 +1356,10 @@ function clearGray() {
 	})
 }
 
+const ignoreSelectors = ['.sign-area', '#background-audio', '#audio-toggle']
+
 document.querySelectorAll('.container *').forEach(el => {
-	if (!el.closest('.orange')) {
+	if (!el.closest('.orange') && !ignoreSelectors.some(sel => el.closest(sel))) {
 		el.addEventListener('mouseenter', () => grayAllExcept())
 		el.addEventListener('mouseleave', clearGray)
 	}
