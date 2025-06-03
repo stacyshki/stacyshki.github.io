@@ -1,0 +1,48 @@
+# used for local development
+services:
+  traefik:
+    image: "traefik:v3.2"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    networks:
+      - net
+    volumes:
+      - "letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--experimental.fastProxy"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--log.level=DEBUG"
+  front:
+    container_name: landing
+    image: nginx:stable-alpine
+    networks:
+      - net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.compress.compress=true"
+      - "traefik.http.services.web_desktop_secure.loadbalancer.server.port=80"
+      - "traefik.http.routers.web_desktop_secure.entrypoints=web"
+      - "traefik.http.routers.web_desktop_secure.rule=Host(`45.9.24.201`) && PathPrefix(`/`)"
+      - "traefik.http.routers.web_desktop_secure.middlewares=compress"
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - "letsencrypt:/letsencrypt"
+    ports:
+      - "8081:80"
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  letsencrypt:
+    name: letsencrypt

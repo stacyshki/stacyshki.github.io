@@ -1,3 +1,5 @@
+let orangeAnimationLock = false
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
 	const confettiManager = new ConfettiManager()
@@ -25,10 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			loadingElement.textContent = '100%'
 
 			loadingScreen.style.animation = 'slideUp 0.5s forwards'
-			setTimeout(() => {
-				loadingScreen.style.display = 'none'
-				container.style.display = 'flex'
-			}, 500)
+			container.style.animation = 'fadeInFocus 0.5s ease forwards'
+			container.style.display = 'flex'
 		})
 		.catch(error => {
 			console.error('Error during loading:', error)
@@ -41,53 +41,117 @@ document.addEventListener('DOMContentLoaded', () => {
 			document.body.classList.remove('no-scroll')
 		})
 
-	const oranges = ['orange4', 'orange5', 'orange6']
+	const el = document.getElementById('orange4')
+	if (el) {
+		let currentFrame = 0
+		const peelFrames = [
+			'media/peeling/peel1.avif',
+			'media/peeling/peel2.avif',
+			'media/peeling/peel3.avif',
+			'media/peeling/peel4.avif',
+		]
 
-	oranges.forEach(id => {
-		const el = document.getElementById(id)
-		if (!el) return
-
-		let isTouch = false
-
-		el.setAttribute('data-tooltip', 'Нажми на меня!')
-
-		const triggerAnimation = () => {
-			const img = el.querySelector('img')
-
-			img.style.animation = 'none'
-			img.offsetHeight
-			img.style.animation = ''
-
-			el.classList.remove('hovered')
-			el.classList.remove('clicked')
-
-			void el.offsetWidth
-			el.classList.add('clicked')
-
-			setTimeout(() => el.classList.remove('clicked'), 5000)
+		const handlePeelClick = () => {
+			if (currentFrame < peelFrames.length) {
+				const img = el.querySelector('img')
+				img.src = peelFrames[currentFrame]
+				currentFrame++
+			}
 		}
-
-		el.addEventListener(
-			'touchstart',
-			() => {
-				isTouch = true
-			},
-			{ passive: true }
-		)
 
 		el.addEventListener('click', e => {
 			e.preventDefault()
-			triggerAnimation()
+			handlePeelClick()
 		})
-	})
+
+		el.addEventListener(
+			'touchstart',
+			e => {
+				handlePeelClick()
+			},
+			{ passive: true }
+		)
+	}
+
+	const orange5 = document.getElementById('orange5')
+	if (orange5) {
+		const img5 = orange5.querySelector('img')
+		let orange5Clicked = false
+
+		const handleClick = () => {
+			if (orange5Clicked) return
+
+			orange5Clicked = true
+			img5.src = 'media/hedgehog/hedgehog.gif'
+			void img5.offsetHeight
+			img5.style.width = '140%'
+			img5.style.transform = 'translateX(-30%)'
+			img5.style.height = 'auto'
+
+			setTimeout(() => {
+				img5.src = 'media/orange.avif'
+				orange5Clicked = false
+				img5.style.width = '100%'
+				img5.style.height = 'auto'
+				img5.style.transform = 'translateX(0%)'
+			}, 760)
+		}
+
+		orange5.addEventListener('click', e => {
+			e.preventDefault()
+			handleClick()
+		})
+
+		orange5.addEventListener(
+			'touchstart',
+			e => {
+				handleClick()
+			},
+			{ passive: true }
+		)
+	}
+
+	const el6 = document.getElementById('orange6')
+	const oldOrange = el6.querySelector('.old-orange')
+	const newOrange = el6.querySelector('.new-orange')
+
+	let isAnimating = false
+
+	const triggerAnimation = () => {
+		if (isAnimating) return
+		isAnimating = true
+
+		oldOrange.style.animation = 'none'
+		newOrange.style.animation = 'none'
+		el6.offsetHeight // reflow
+		oldOrange.style.animation = ''
+		newOrange.style.animation = ''
+
+		el6.classList.add('clicked')
+
+		setTimeout(() => {
+			oldOrange.style.opacity = '1'
+			newOrange.style.opacity = '0'
+			el6.classList.remove('clicked')
+			isAnimating = false
+		}, 2000)
+	}
+
+	const handleClickOrTouch = e => {
+		e.preventDefault()
+		triggerAnimation()
+	}
+
+	el6.addEventListener('click', handleClickOrTouch)
+	el6.addEventListener('touchstart', handleClickOrTouch, { passive: false })
 
 	const helpButton = document.getElementById('help-button')
 	if (helpButton) {
 		helpButton.addEventListener('click', () => {
-			window.scrollTo({
-				top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
-				behavior: 'smooth',
-			})
+			const donateOffer = document.querySelector('.donate_offer')
+			if (donateOffer) {
+				donateOffer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+			}
 		})
 	} else {
 		console.error('Help button not found')
@@ -111,10 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 
 			setTimeout(() => {
-				window.scrollTo({
-					top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
-					behavior: 'smooth',
-				})
+				const donateOffer = document.querySelector('.donate_offer')
+				if (donateOffer) {
+					donateOffer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				}
 			}, 200)
 		})
 	})
@@ -126,12 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			})
 
 			document.getElementById('close-orange1-modal-more').click()
+			document.body.classList.remove('no-scroll')
 
 			setTimeout(() => {
-				window.scrollTo({
-					top: document.body.scrollHeight - document.body.scrollHeight * 0.4,
-					behavior: 'smooth',
-				})
+				const donateOffer = document.querySelector('.donate_offer')
+				if (donateOffer) {
+					donateOffer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				}
 			}, 200)
 		})
 	})
@@ -141,17 +206,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			trigger: '.caterpillar',
 			modal: '.caterpillar-modal',
 			imgSelector: 'img',
-			defaultImg: 'media/caterpillar.svg',
-			hoverImg: 'media/caterpillar_hover.png',
-			clickImg: 'media/caterpillar_hover.png',
+			defaultImg: 'media/caterpillar.avif',
+			hoverImg: 'media/caterpillar_hover.avif',
+			clickImg: 'media/caterpillar_hover.avif',
 		},
 		{
 			trigger: '.bird',
 			modal: '.bird-modal',
 			imgSelector: 'img',
-			defaultImg: 'media/bird.svg',
-			hoverImg: 'media/bird_hover.png',
-			clickImg: 'media/bird_hover.png',
+			defaultImg: 'media/bird.avif',
+			hoverImg: 'media/bird_hover.avif',
+			clickImg: 'media/bird_hover.avif',
 		},
 	]
 
@@ -169,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			const showModal = () => {
 				modalEl.style.display = 'block'
+				modalEl.style.animation = 'fadeInFocus 0.5s ease forwards'
 				triggerEl.style.zIndex = '1000'
 			}
 			const hideModal = () => {
@@ -285,7 +351,7 @@ function launchConfetti() {
 	console.log(pinataCenterX, pinataCenterY)
 
 	const confettiImages = []
-	for (let i = 1; i <= 9; i++) {
+	for (let i = 1; i <= 7; i++) {
 		const img = new Image()
 		img.src = `media/confetti/confetti ${i.toString().padStart(2, '0')}.png`
 		confettiImages.push(img)
@@ -327,8 +393,8 @@ const pinataImages = {
 	default: new Image(),
 	hover: new Image(),
 }
-pinataImages.default.src = 'media/pinata.svg'
-pinataImages.hover.src = 'media/pinata-hover.svg'
+pinataImages.default.src = 'media/pinata/pinata.png'
+pinataImages.hover.src = 'media/pinata/pinata-hover.png'
 
 function handlePinataInteraction(e) {
 	pinata.src = pinataImages.hover.src
@@ -412,11 +478,11 @@ if (pinata) {
 			hintElement.style.top = '45%'
 			hintElement.style.left = '25%'
 			hintElement.style.transform = 'translateX(-25%)'
-			hintElement.style.backgroundImage = 'url("media/modal-window.png")'
+			hintElement.style.backgroundImage = 'url("media/hint-window.png")'
 			hintElement.style.backgroundSize = 'contain'
 			hintElement.style.backgroundRepeat = 'no-repeat'
 			hintElement.style.backgroundPosition = 'center'
-			hintElement.style.backgroundSize = '450% auto'
+			hintElement.style.backgroundSize = '100% 100%'
 			hintElement.style.color = '#2E2C24'
 			hintElement.style.padding = '10px'
 			hintElement.style.borderRadius = '5px'
@@ -435,9 +501,30 @@ if (pinata) {
 
 // Promo codes
 const promoCodes = [
-	{ company: 'StockX', code: 'WINTER25' },
-	{ company: 'Temu', code: 'OFF40' },
-	{ company: 'HnM', code: '30POP5' },
+	{
+		company:
+			'<img src="media/promo_logos/ingos.png" alt="Ингосстрах" class="promo-logo">',
+		code: 'УВЕРЕННОСТЬ',
+		desc: 'Промокод 10%  действует на все страховые полисы для путешествий, кроме годового полиса. Активируйте промокод в приложении IngoMobile или на сайте Иногостраха до 13.07.2025',
+	},
+	{
+		company:
+			'<img src="media/promo_logos/yasno.png" alt="ЯСНО" class="promo-logo">',
+		code: 'ONCOLOGIKA-YASNO',
+		desc: 'Скидка 15% на первые 3 сессии при регистрации. Промокод на 1 сессию нужно применить до 13.07.2025',
+	},
+	{
+		company:
+			'<img src="media/promo_logos/litres.png" alt="ЛитРес" class="promo-logo">',
+		code: 'oncologica2025',
+		desc: 'Промокод предоставляет возможность скачать одну электронную или аудиокнигу из подборки на выбор в подарок. Одновременно промокод предоставляет скидку 20% на основной каталог Литрес. Скидка действует 3 дня с момента активации на одну покупку и неограниченное количество книг в корзине. Скидка не распространяется на Литрес: Подписку и Литрес: Абонемент. Скидка не суммируется с другими акциями. Скидка не распространяется на часть книг, определяемых Литрес самостоятельно в одностороннем порядке. Активировать промокод можно до 31.08.2025г',
+	},
+	{
+		company:
+			'<img src="media/promo_logos/flowwow.png" alt="FLOWWOW" class="promo-logo">',
+		code: 'oncologicafw13',
+		desc: 'Промокод на скидку 15% действует до 31.08.2025 на первую или повторную покупку на сайте или в мобильном приложении Flowwow. Во время оформления заказа введите промокод в специальное поле – сумма заказа обновится автоматически.',
+	},
 ]
 
 function getRandomPromoCode() {
@@ -449,15 +536,27 @@ function showPopup() {
 	popupShown = true
 	const promo = getRandomPromoCode()
 	const promoElement = document.createElement('div')
-	promoElement.innerHTML = `<span style="color: #2e2c24; cursor: pointer;background-color: #ffffff;padding: 0.5vw;border-radius: 3rem;font-size: 2.2vw;margin-bottom: 1vw;">${promo.code}<img src="media/copy.png" alt="Copy" style="height: 2.2vw; margin-left: 0.5vw;"></span><br />Промокод от «${promo.company}»!`
-	promoElement.addEventListener('click', () => {
+	promoElement.classList.add('promo-wrapper')
+
+	promoElement.innerHTML = `
+		<span class="promo-code">
+			${promo.code}
+			<img src="media/icons/icon_copy.avif" alt="Copy" class="copy-icon">
+		</span>
+		<p class="promo-brand-before">Промокод от</p>
+		<div class="promo-brand">${promo.company}</div>
+		<p class="promo-desc">${promo.desc}</p>
+	`
+
+	promoElement.querySelector('.promo-code').addEventListener('click', () => {
 		navigator.clipboard.writeText(promo.code).then(() => {
 			alert('Промокод скопирован в буфер обмена!')
 		})
 	})
+
 	const popup = document.getElementById('popup-backdrop')
 	const promoContainer = popup.querySelector('p')
-	promoContainer.innerHTML = '' // Clear existing promo code
+	promoContainer.innerHTML = ''
 	promoContainer.appendChild(promoElement)
 	popup.style.display = 'flex'
 }
@@ -493,8 +592,8 @@ class PinataManager {
 		this.breakThreshold = this.getRandomBreakThreshold()
 
 		this.PINATA_IMAGES = {
-			default: 'media/pinata.svg',
-			hover: 'media/pinata-hover.svg',
+			default: 'media/pinata/pinata.png',
+			hover: 'media/pinata/pinata-hover.png',
 		}
 
 		this.initEventListeners()
@@ -585,7 +684,7 @@ class ConfettiManager {
 	}
 
 	initConfettiImages() {
-		for (let i = 1; i <= 9; i++) {
+		for (let i = 1; i <= 7; i++) {
 			const img = new Image()
 			img.src = `media/confetti/confetti ${i.toString().padStart(2, '0')}.png`
 			this.confettiImages.push(img)
@@ -799,7 +898,7 @@ document
 			await new Promise(resolve => {
 				img.onload = resolve
 				img.onerror = () => {
-					console.error('Error loading SVG')
+					console.error('Error loading card')
 					resolve()
 				}
 			})
@@ -810,7 +909,7 @@ document
 			ctx.drawImage(img, 0, 0)
 
 			const link = document.createElement('a')
-			link.download = selectedCard.replace('.svg', '.png')
+			link.download = selectedCard
 			link.href = canvas.toDataURL('image/png')
 
 			document.body.appendChild(link)
@@ -847,10 +946,11 @@ function checkOrientation() {
 	}
 }
 
-// Add a debounced event listener for orientation changes
-window.addEventListener('orientationchange', debounce(checkOrientation, 200))
+document.addEventListener('DOMContentLoaded', () => {
+	setTimeout(checkOrientation, 10)
+})
 
-document.addEventListener('DOMContentLoaded', checkOrientation)
+window.addEventListener('orientationchange', debounce(checkOrientation, 200))
 
 function getCurrentRotation(element) {
 	const rotation = getComputedStyle(element).transform
@@ -878,11 +978,26 @@ document.querySelectorAll('.orange').forEach(orange => {
 		if (isTouchDevice) {
 			orange.addEventListener('click', () => {
 				modal.classList.toggle('active')
+
+				$('.container').css('animation', 'none')
+				grayAllExcept(orange)
+				orangeAnimationLock = true
 			})
 		} else {
 			if (!isDisabledModal) {
-				const showModal = () => modal.classList.add('active')
-				const hideModal = () => modal.classList.remove('active')
+				const showModal = () => {
+					modal.classList.add('active')
+
+					$('.container').css('animation', 'none')
+					grayAllExcept(orange)
+					orangeAnimationLock = true
+				}
+				const hideModal = () => {
+					modal.classList.remove('active')
+
+					orangeAnimationLock = false
+					clearGray()
+				}
 
 				let isOver = false
 				const checkHide = () => {
@@ -924,42 +1039,47 @@ document.querySelectorAll('.orange').forEach(orange => {
 document.querySelectorAll('.close-modal').forEach(button => {
 	button.addEventListener('click', function () {
 		const modal = this.closest('.orange-modal')
-		if (modal) modal.classList.remove('active')
+		if (modal) {
+			modal.classList.remove('active')
+		}
 	})
 })
 
 document.getElementById('learn-more').addEventListener('click', () => {
 	document.getElementById('orange1-modal-more').style.display = 'flex'
+	document.body.classList.add('no-scroll')
 })
 
 document
 	.getElementById('close-orange1-modal-more')
 	.addEventListener('click', () => {
 		document.getElementById('orange1-modal-more').style.display = 'none'
+		document.body.classList.remove('no-scroll')
 	})
 
 // Game 1: Paint
 ;(function () {
 	const canvas = document.getElementById('orangeCanvas')
 	const ctx = canvas.getContext('2d')
+	const saveBtn = document.getElementById('saveDrawing')
 
 	const centerX = canvas.width / 2
 	const centerY = canvas.height / 2
 	const radius = Math.min(canvas.width, canvas.height) / 2
 
 	let drawing = false
-	let currentColor = 'orange'
+	let currentColor = '#ff5100'
+	let hasDrawn = false
 
 	const orangeImg = new Image()
-	orangeImg.src = 'media/paint_game/paint_orange.png'
+	orangeImg.src = 'media/paint_game/paint_orange.avif'
+
+	const overlayCanvas = document.getElementById('orangeOverlay')
+	const overlayCtx = overlayCanvas.getContext('2d')
 
 	orangeImg.onload = () => {
-		drawBase()
-	}
-
-	function drawBase() {
-		ctx.clearRect(0, 0, canvas.width, canvas.height)
-		ctx.drawImage(
+		overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height)
+		overlayCtx.drawImage(
 			orangeImg,
 			centerX - radius,
 			centerY - radius,
@@ -970,6 +1090,12 @@ document
 
 	document.querySelectorAll('.color-btn').forEach(btn => {
 		btn.addEventListener('click', () => {
+			document.querySelectorAll('.color-btn').forEach(b => {
+				b.classList.remove('active')
+			})
+
+			btn.classList.add('active')
+
 			currentColor = btn.getAttribute('data-color')
 		})
 	})
@@ -1024,6 +1150,10 @@ document
 			ctx.beginPath()
 			ctx.arc(x, y, 5, 0, Math.PI * 2)
 			ctx.fill()
+			if (!hasDrawn) {
+				hasDrawn = true
+				saveBtn.classList.add('active')
+			}
 		}
 	}
 
@@ -1043,12 +1173,13 @@ document
 			bgWidth: 506,
 			bgHeight: 655,
 			drawX: 133,
-			drawY: 173,
+			drawY: 212,
 			drawWidth: 241,
 			drawHeight: 248,
 		}
 
 		const sourceCanvas = document.getElementById('orangeCanvas')
+		const overlayCanvas = document.getElementById('orangeOverlay')
 		const tempCanvas = document.createElement('canvas')
 		const tempCtx = tempCanvas.getContext('2d')
 
@@ -1057,7 +1188,7 @@ document
 
 		const bgImage = new Image()
 		bgImage.crossOrigin = 'anonymous'
-		bgImage.src = 'media/paint_game/paper.png'
+		bgImage.src = 'media/paint_game/paper.avif'
 
 		bgImage.onload = function () {
 			tempCtx.drawImage(bgImage, 0, 0, FIGMA.bgWidth, FIGMA.bgHeight)
@@ -1082,99 +1213,99 @@ document
 			tempCtx.translate(offsetX, offsetY)
 			tempCtx.scale(scale, scale)
 			tempCtx.drawImage(sourceCanvas, 0, 0)
+			tempCtx.drawImage(overlayCanvas, 0, 0)
 			tempCtx.restore()
 
-			const link = document.createElement('a')
-			link.download = 'orange.png'
-			link.href = tempCanvas.toDataURL('image/png')
-			link.click()
+			const textX = 137 + 233 / 2
+			const textY = 56 + 40
+
+			tempCtx.font = '40px Normalidad, sans-serif'
+			tempCtx.textAlign = 'center'
+			tempCtx.textBaseline = 'top'
+			tempCtx.lineWidth = 5
+			tempCtx.strokeStyle = '#EBE1C8'
+			tempCtx.fillStyle = '#2E2C24'
+
+			const lines = ['Мой', 'апельсин!']
+			lines.forEach((line, i) => {
+				const y = textY + i * 44
+				tempCtx.strokeText(line, textX, y)
+				tempCtx.fillText(line, textX, y)
+			})
+
+			const logo = new Image()
+			logo.src = 'media/paint_game/logo_after_game.png'
+			logo.onload = function () {
+				const logoWidth = 325
+				const logoHeight = 40
+				const logoX = 92
+				const logoY = 535
+
+				tempCtx.drawImage(logo, logoX, logoY, logoWidth, logoHeight)
+
+				const link = document.createElement('a')
+				link.download = 'Мой апельсин.png'
+				link.href = tempCanvas.toDataURL('image/png')
+				if (hasDrawn) {
+					link.click()
+				}
+			}
 		}
 
 		bgImage.onerror = function () {
 			const link = document.createElement('a')
-			link.download = 'orange-only.png'
+			link.download = 'Мой апельсин.png'
 			link.href = sourceCanvas.toDataURL('image/png')
-			link.click()
+			if (hasDrawn) {
+				link.click()
+			}
 		}
 	}
 
 	window.clearCanvas = function () {
-		drawBase()
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		hasDrawn = false
+		saveBtn.classList.remove('active')
 	}
 })()
 
 // Game 2: Roulette
-const sectors = [
-	'Подари улыбку',
-	'Позвони бабушке',
-	'Помоги другу',
-	'Поделись конфетой',
-	'Убери комнату',
-	'Напиши открытку',
-	'Обними маму',
-	'Скажи спасибо',
-]
-
-let currentRotation = 0
+let currentRotation
+let hasSpun = false
 
 document.addEventListener('DOMContentLoaded', () => {
 	const wheel = document.getElementById('wheel')
 	const spinBtn = document.getElementById('spinBtn')
-	const resultText = document.getElementById('resultText')
+	const rouletteModal = document.getElementById('orange8-modal')
 
 	spinBtn.addEventListener('click', () => {
-		const sectorCount = sectors.length
-		const randomSector = Math.floor(Math.random() * sectorCount)
-		const sectorAngle = 360 / sectorCount
-		const stopAngle = randomSector * sectorAngle
+		if (!hasSpun) {
+			currentRotation = 0
+			const sectorCount = 16
+			const randomSector = Math.floor(Math.random() * sectorCount)
+			const sectorAngle = 360 / sectorCount
+			const stopAngle = randomSector * sectorAngle
 
-		const spins = 5
-		const targetRotation = currentRotation + 360 * spins + (360 - stopAngle)
-		currentRotation = targetRotation % 360
+			const spins = 5
+			const targetRotation = currentRotation + 360 * spins + (360 - stopAngle)
+			currentRotation = targetRotation % 360
 
-		wheel.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)'
-		wheel.style.transform = `rotate(${targetRotation}deg)`
-
-		resultText.textContent = ''
-		openSharePopup.style.display = 'none'
-
-		const result = sectors[randomSector]
-
-		setTimeout(() => {
-			resultText.textContent = `Выпало: ${result}`
-			openSharePopup.style.display = 'inline-block'
-
-			const text = `Я выбрал из колеса добрых дел: ${result} 😊`
-			const url = location.href
-
-			tgLink.href = `https://t.me/share/url?url=${encodeURIComponent(
-				url
-			)}&text=${encodeURIComponent(text)}`
-			vkLink.href = `https://vk.com/share.php?url=${encodeURIComponent(
-				url
-			)}&title=${encodeURIComponent(text)}`
-			waLink.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-				text + ' ' + url
-			)}`
-		}, 250)
+			wheel.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)'
+			wheel.style.transform = `rotate(${targetRotation}deg)`
+			wheel.addEventListener(
+				'transitionend',
+				() => {
+					spinBtn.textContent = 'Сделаю!'
+					hasSpun = true
+				},
+				{ once: true }
+			)
+		} else {
+			rouletteModal.classList.remove('active')
+			spinBtn.textContent = 'Крутить'
+			hasSpun = false
+		}
 	})
-})
-
-const openSharePopup = document.getElementById('openSharePopup')
-const sharePopup = document.getElementById('sharePopup')
-
-const tgLink = document.getElementById('tgLink')
-const vkLink = document.getElementById('vkLink')
-const waLink = document.getElementById('waLink')
-
-openSharePopup.addEventListener('click', () => {
-	sharePopup.classList.remove('hidden')
-})
-
-const closeShareBtn = document.querySelector('.close-share')
-
-closeShareBtn.addEventListener('click', () => {
-	sharePopup.classList.add('hidden')
 })
 
 // Video
@@ -1198,12 +1329,14 @@ videoBtns.forEach(btn => {
 	btn.addEventListener('click', () => {
 		currentIndex = parseInt(btn.dataset.index)
 		openModal(currentIndex)
+		document.body.classList.add('no-scroll')
 	})
 })
 
 closeBtn.addEventListener('click', () => {
 	modal.classList.add('hidden')
 	carousel.innerHTML = ''
+	document.body.classList.remove('no-scroll')
 })
 
 function renderCarousel(activeIndex) {
@@ -1271,43 +1404,117 @@ function createVideoElement(index) {
 // Portraits
 const personsData = {
 	1: {
-		name: 'Иванов Иван Иванович',
-		text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus feugiat fermentum ex, molestie elementum enim ornare eget. Mauris vitae purus mi. Vivamus vehicula arcu sit amet congue pharetra. Vestibulum volutpat, mauris eget consequat lacinia, nunc risus mattis purus, id feugiat enim lorem non libero. Praesent quis luctus nisi. Aenean accumsan fermentum dolor ut eleifend. Mauris ut consequat neque, sed aliquet elit. Sed gravida eget lacus et interdum. Vestibulum vitae dictum tellus. Proin convallis vitae ex quis laoreet. Vivamus pretium porta est et rutrum. Mauris convallis urna sit amet ipsum eleifend, at vestibulum ipsum faucibus. Maecenas non sem ac nisl porta facilisis. Etiam non diam mi. 
-Sed gravida velit id euismod gravida. Proin volutpat, orci sed tristique dignissim, nisi nulla dapibus nunc, sed condimentum nibh ligula vel dui. Mauris lacinia fringilla risus, id mattis augue ornare quis. Nulla vel nisl sed lectus finibus rhoncus. Quisque pharetra ornare mauris ac mattis. Nullam eleifend feugiat nulla eu ornare. Pellentesque imperdiet, purus nec posuere eleifend, nisl lorem suscipit dui, in dapibus massa justo nec enim. Maecenas pulvinar aliquet turpis, id hendrerit elit commodo at. Pellentesque a porttitor tellus. Etiam id metus ut massa ultricies pharetra. 
-Mauris sed dui odio. Quisque pretium pellentesque risus, et accumsan lectus vulputate nec. Sed ut viverra ligula. Proin rhoncus lacus iaculis libero ornare, ut mollis enim mattis. Suspendisse potenti. Donec quis lacus purus. Proin eu tortor a turpis fringilla ornare. Cras quis tempus ligula, maximus egestas dolor. Quisque a hendrerit ipsum, in ultricies sapien. 
-Donec eget viverra enim. Vivamus eu semper elit. Mauris tristique mauris vitae dolor elementum, nec efficitur est sollicitudin. Aliquam et interdum risus. Nam maximus nibh magna, sed euismod ex semper eu. Mauris iaculis diam commodo, eleifend augue at, fermentum risus. Phasellus vehicula consectetur leo eget tempus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam malesuada consequat sem, non tempus augue tincidunt in. Suspendisse ullamcorper, est eget dictum malesuada, diam risus feugiat diam, eget varius ligula mauris et justo. Vivamus congue dui non rutrum vulputate. Morbi lacinia auctor est, vel malesuada nulla ultrices quis. 
-Sed quis justo blandit, egestas libero nec, mollis nulla. Donec eu elit lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus maximus mauris justo, vel eleifend sem sodales in. Proin a varius dui. Maecenas sapien diam, semper id mollis et, tristique eu arcu. Nulla dapibus malesuada nisi, a mattis ipsum scelerisque at. 
-Quisque maximus non orci eu luctus. Quisque sed eleifend neque. Aliquam convallis luctus ex, nec varius turpis. Fusce eu libero varius, luctus elit a, mattis metus. Integer non justo quis diam vulputate pulvinar. Sed a elementum dui. Aenean dictum ligula at odio tincidunt dictum. Praesent non lacinia nisi. Phasellus feugiat lacus vel sem rhoncus, eget feugiat tellus pharetra. Sed posuere ipsum lorem, non ultricies nisl eleifend ut. Morbi id mollis leo. Ut at eleifend leo. Quisque ut viverra massa, eget porta nisl. Nulla congue mattis quam interdum faucibus. Donec rhoncus risus tortor, ut viverra nisi pretium sed. Mauris sagittis arcu dapibus, cursus arcu in, porta nisl. 
-Aliquam nec placerat arcu. Mauris cursus dignissim risus, non ultricies dolor facilisis id. Nulla auctor in purus quis fringilla. Integer malesuada magna nec rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer et ante interdum, finibus dolor bibendum, ornare quam. Proin auctor velit id massa elementum, in cursus augue elementum. Morbi at sagittis diam, a iaculis justo. Quisque pharetra posuere elit, a luctus lorem. Cras posuere nisl non venenatis placerat. 
+		name: `Сергей, 64 года<br/>рак предстательной железы`,
+		text: `<b><i>«Бывает, на даче к кормушке прилетают птицы, и я с женой наблюдаю за ними»</i></b>
+<br/>
+Я узнал о диагнозе в 63 года. Сразу IV стадия. Опухоль разрослась и теперь поражает скелет.
+<br/>
+Спустя некоторое время я сказал себе: «Сколько Бог дал, столько я и проживу». Врачи дали мне полгода. А я сам себе дал установку — прожить 22 года. 
+<br/>
+Временами я чувствую себя так, словно разгрузил вагон с углем. Но сейчас я <b><i>получаю удовольствие от простых вещей</i></b>. Бывает, на даче к кормушке прилетают птицы, и я с женой наблюдаю за ними. Я благодарю Бога, что он дал еще один день, чтобы это увидеть.
+<br/>
+Фонд мне очень помог, ведь помимо лечения нужна информация, куда и как обратиться, питание и много других нюансов. Но главное, я понял, что есть люди, которые могут сопереживать мне. И что нужно обращать внимание на свое здоровье, заботиться о близких.
+<br/>
+<b><i>Я обзвонил всех своих друзей-мужчин</i></b>. Шесть человек пошли на обследование ПСА, и у всех было обнаружено превышение. Хорошо, что в «серой зоне». Кто-то сделал операцию, кто-то находится под контролем. А я просто счастлив.
 `,
 	},
 	2: {
-		name: 'Петров Петр Петрович',
-		text: 'Информация о втором человеке. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+		name: `Татьяна, 36 лет<br/>рак шейки матки`,
+		text: `<b><i>«Я поняла, что диагноз — не приговор всему»</i></b>
+<br/>
+Я в зоне риска и много лет ежегодно наблюдалась у гинеколога. Когда стало сильно кровить, сходила на прием, прошла УЗИ, кольпоскопию, мазки на онкомаркеры. Ничего не выявили.
+<br/> 
+А спустя год снова кровотечение. Биопсия показала рак шейки матки, III стадия. С этого момента началась моя борьба.
+<br/>
+Химиотерапия, брахитерапия. Восстановление и рецидив, снова восстановление и рецидив.
+<br/>
+Сейчас я на иммунотерапии и <b><i>могу позволить себе работать, это моя победа!</i></b> 10 лет я была социальным психологом: помогала детям с аутизмом, ДЦП, ЗПР. Сейчас выбрала более спокойное направление — логопедию.
+<br/>
+Я поняла, что диагноз — не приговор всему. Работа и семья вытягивают меня из болезни. Муж записывал к врачу, разбирался в клинических рекомендациях. Детей мы не ограждали от проблем, и я чувствую их заботу. Как ответить на их вопрос: «Ты умрешь?». Мои дети очень тактильные, и <b><i>обнимашки порой громче слов</i></b>.
+<br/>
+«Онкологика» помогла мне оплатить трансфер и проживание на период обследования и консультаций, обеспечил такси к месту лечения. Фонд помогает нам найти ориентиры.
+<br/>
+Когда наступает беда, пожалуйста, не стесняйтесь просить о помощи.`,
 	},
 	3: {
-		name: 'Сидорова Анна Михайловна',
-		text: 'Информация о восьмом человеке. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+		name: `Любовь, 67 лет<br/>рак легких`,
+		text: `<b><i>«Мне помогает приготовление пирожков для 12 внуков»</i></b>
+<br/>
+Когда спрашивала врачей, сколько мне осталось, они отводили глаза и молчали. Было сложно принять болезнь, но очень помогли дети.
+<br/>
+Когда мне отказали в лечении, дочь нашла другую клинику, но за 4000 км, в Москве. «Онкологика» помогает с оплатой билетов и продуктовыми наборами. Если бы не фонд, то меня бы уже не было, а мне <b><i>так хочется еще пожить и насладиться простыми вещами</i></b>.
+<br/>
+Я начала получать иммунотерапию вместе с химиотерапией. От слабости мне помогает приготовление пирожков для 12 внуков! После каждого курса семья устраивает мне праздник: мы жарим шашлыки и покупаем вкусный торт.
+<br/>
+Когда закрывается одна дверь, обязательно открывается другая. Главное — продолжать жить, ведь жизнь одна, и второй такой не будет.
+`,
 	},
 	4: {
-		name: 'Иванов Иван Иванович',
-		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		name: `Валерия, 25 лет<br/>рак яичника`,
+		text: `<b><i>«Я лечусь, чтобы дарить и испытывать любовь»</i></b>
+<br/>
+Я училась в университете на переводчика, занималась журналистикой. Ходила на хайкинг – поднималась в горы, смотрела на смешных сурков, на горные водопады, голубые озера и реки. Занималась спортом, встала на сноуборд. Было очень много свободы!
+<br/>
+У меня была радикальная операция, и выписали меня уже с диагнозом. Спустя месяц начались курсы химиотерапии. 
+<br/>
+Психолог «Онкологики» помогла проработать страх смерти и рецидива, тревогу за близких. Помогла <b><i>осознать, что жизнь не замерла и не остановилась</i></b>. А на фотосессии, проведенной фондом, мне так захотелось запечатлеть себя новую, с короткими, чуть набравшими длину волосами после терапии. Было важно <b><i>запомнить этот момент жизни, каким бы он ни был</i></b>. 
+<br/>
+Я лечусь, чтобы воплощать свои мечты, чтобы быть рядом с близкими, дарить и испытывать любовь. Это дает мне сил идти к цели – войти в стойкую ремиссию.`,
 	},
 	5: {
-		name: 'Иванов Иван Иванович',
-		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		name: `Александр, 39 лет<br/>канцероматоз`,
+		text: `<b><i>«Мы всегда что-то теряем и что-то находим. Нужно это принимать и благодарить жизнь»</i></b>
+<br/>
+Пять лет назад я уехал в Европу работать дальнобойщиком, но судьба резко изменила маршрут. У меня начали отказывать ноги. Госпитализация, анализы – и страшный вердикт: тромбы в обеих ногах, а причина – опухоль в брюшной полости.
+<br/>
+Опухоль росла стремительно, по несколько сантиметров в неделю. Меня экстренно прооперировали, потом была многократная химиотерапия. <b><i>Я вступил в чат для людей с раком и их близких «Следуй за мной», организованный «Онкологикой». Там познакомился с девушкой из своего города.</i></b>
+<br/>
+Мы очень сблизились. Когда начинали общаться, она еще могла ходить, но через два месяца стала лежачей. Я помогал чем мог, был с ней в больнице. К сожалению, в декабре того же года Юли не стало, но в моей жизни появился ее ребенок, он дает мне силы сражаться дальше…
+<br/>
+Мы всегда что-то теряем, но что-то обязательно находим. Нужно просто это принимать, как оно есть, и благодарить эту жизнь. За каждый подаренный день. Только позитивный настрой может вытащить из всего этого, я в этом уверен.`,
 	},
 	6: {
-		name: 'Иванов Иван Иванович',
-		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		name: `Никита, 20 лет<br/>рак яичника`,
+		text: `<b><i>«Я получил лучшее лечение, но без “Онкологики” я бы не справился»</i></b>
+<br/>
+Я учусь на сварщика и очень люблю проводить время с друзьями. У меня их много, их поддержка придает мне сил в любой ситуации.
+<br/>
+Когда я узнал о своем диагнозе, было очень тяжело – впервые в жизни я не смог сдержать слез. Лечение началось в моем регионе, <b><i>но точный диагноз поставили не сразу, из-за этого болезнь успела распространиться по организму</i></b>. Уже в Москве я прошел химиотерапию, лучевую терапию и операцию.
+<br/>
+Фонд помог с оформлением инвалидности, отправил мне продуктовую корзину, обеспечил проживание и трансфер, пока я лечился далеко от дома. Я получил лучшее лечение, но без «Онкологики» я бы точно не справился.
+<br/>
+Эмоционально всегда тяжело вести борьбу с раком. Главное – не грустить и не отчаиваться!`,
 	},
 	7: {
-		name: 'Иванов Иван Иванович',
-		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		name: `Екатерина, 38 лет, лейкоз, и ее муж Александр`,
+		text: `<b><i>«Переключайтесь, мечтайте. А еще не бойтесь просить помощи, вы не одни»</i></b>
+<br/>
+<b>Александр:</b>
+<br/>
+Когда жена сообщила о диагнозе, сказать, что я в шоке, это ничего не сказать. Непонимание, злость, грусть, страх. Главная мысль была: диагноз ошибочный. Но диагноз подтвердился, началась химиотерапия, поиск донора костного мозга, и я стал отсеивать негативные мысли. 
+<br/>
+Казалось, самым сложным будет совмещать работу с бытовыми задачами, которые раньше мы делили пополам. <b><i>Но самое сложное — это эмоционально не выгореть, чтобы сохранять позитивный настрой и поддерживать жену</i></b>. 
+<br/>
+<b>Екатерина:</b>
+<br/>
+Поддержка мужа невероятна. Он работал, присматривал с детьми и при этом приезжал ко мне каждый день, привозил чистые вещи. <b><i>Часто я могла видеть его только через больничное окно</i></b>. Когда было очень плохо и я не могла подойти к окну, все равно чувствовала его заботу. Меня окрыляли слова: «Мы справимся. Я тебя люблю».
+<br/>
+Всем, кто лечится от рака, хочу сказать: главное — мыслить позитивно, даже когда страх сковывает разум и тело. Переключайтесь, мечтайте. А еще не бойтесь просить помощи, вы не одни.`,
 	},
 	8: {
-		name: 'Иванов Иван Иванович',
-		text: 'Здесь будет подробный текст о персоне. Можно добавить несколько абзацев. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+		name: `Екатерина, 48 лет<br/>рак яичника`,
+		text: `<b><i>«Пройдя через всё это, я считаю себя героем»</i></b>
+<br/>
+Я работала на разных должностях: от администратора салона красоты до актрисы массовых сцен. В какой-то момент я заметила, что жизненная энергия начинает исчезать. На лице появились пятнышки, а живот стал сильно тянуть. 
+<br/>
+Я помню, как сделала МРТ и посмотрела на экран. Там всё было черным. Когда мне поставили третью стадию с метастазами, я подумала: как такое может быть?
+<br/> 
+После сложной операции курсы химиотерапии стали для меня страшным сном. Я потеряла 20 килограммов. <b><i>Со швами, дренажами, худая, словно маленький инопланетянин. У меня едва хватало сил, чтобы просто присесть на кровать.</i></b>
+<br/>
+Пройдя через всё это, я считаю себя героем. Фотосессия от фонда принесла мне огромное удовольствие. Эмоции каждой женщины на съемках были яркими и положительными. Каблуки пока носить сложно, но я уже могу взять себя в руки.
+<br/>
+Я люблю жизнь, а жизнь любит меня.
+`,
 	},
 }
 
@@ -1323,49 +1530,153 @@ portraitItems.forEach(item => {
 		const personId = item.getAttribute('data-id')
 		const personData = personsData[personId]
 
-		modalImgPt.src = item.src
+		modalImgPt.src = `media/portraits/${personId}.jpg`
 		modalImgPt.alt = item.alt
-		modalNamePt.textContent = personData.name
+		modalNamePt.innerHTML = `<h2>${personData.name}</h2>`
 		modalTextPt.innerHTML = `<p>${personData.text}</p>`
 
 		modalPt.classList.add('portraits-modal--active')
+		document.body.classList.add('no-scroll')
 	})
 })
 
 closeBtnPt.addEventListener('click', () => {
 	modalPt.classList.remove('portraits-modal--active')
+	document.body.classList.remove('no-scroll')
 })
 
 // Gray all except hovered
 const oranges = document.querySelectorAll('.orange')
 
+function isOrange4FullyPeeled(orange) {
+	const img = orange.querySelector('img')
+	return img.src.includes('peel4.avif') || img.src.includes('peel_gray.avif')
+}
+
+function isOrange4PartiallyPeeled(orange) {
+	const img = orange.querySelector('img')
+	return (
+		img.src.includes('peel1.avif') ||
+		img.src.includes('peel2.avif') ||
+		img.src.includes('peel3.avif')
+	)
+}
+
+function hasOrange4BeenTouched(orange) {
+	const img = orange.querySelector('img')
+	return img.src.includes('peel')
+}
+
+function isOrange5PlayingGif(orange) {
+	const img = orange.querySelector('img')
+	return img.src.includes('hedgehog.gif')
+}
+
 function grayAllExcept(except = null) {
-	oranges.forEach(orange => {
-		const img = orange.querySelector('img')
-		if (orange === except) {
-			img.classList.remove('gray')
-		} else {
-			img.classList.add('gray')
-		}
-	})
+	if (!orangeAnimationLock) {
+		oranges.forEach(orange => {
+			const img = orange.querySelector('img')
+
+			if (orange === except) {
+				if (orange.id === 'orange4') {
+					if (isOrange4FullyPeeled(orange)) {
+						img.src = 'media/peeling/peel4.avif'
+					} else if (!isOrange4PartiallyPeeled(orange)) {
+						img.src = 'media/orange.avif'
+					}
+				} else if (orange.id === 'orange5') {
+					if (!isOrange5PlayingGif(orange)) {
+						img.src = 'media/orange.avif'
+					}
+				} else {
+					img.src = 'media/orange.avif'
+				}
+			} else {
+				if (orange.id === 'orange4') {
+					if (isOrange4FullyPeeled(orange)) {
+						img.src = 'media/peeling/peel_gray.avif'
+					} else if (!hasOrange4BeenTouched(orange)) {
+						img.src = 'media/orange_gray.avif'
+					}
+				} else if (orange.id === 'orange5') {
+					if (!isOrange5PlayingGif(orange)) {
+						img.src = 'media/orange_gray.avif'
+					}
+				} else {
+					img.src = 'media/orange_gray.avif'
+				}
+			}
+		})
+	}
 }
 
 function clearGray() {
-	oranges.forEach(orange => {
-		orange.querySelector('img').classList.remove('gray')
-	})
+	if (!orangeAnimationLock) {
+		oranges.forEach(orange => {
+			const img = orange.querySelector('img')
+
+			if (orange.id === 'orange4') {
+				if (isOrange4FullyPeeled(orange)) {
+					img.src = 'media/peeling/peel4.avif'
+				} else if (!isOrange4PartiallyPeeled(orange)) {
+					img.src = 'media/orange.avif'
+				}
+			} else if (orange.id === 'orange5') {
+				if (!isOrange5PlayingGif(orange)) {
+					img.src = 'media/orange.avif'
+				}
+			} else {
+				img.src = 'media/orange.avif'
+			}
+		})
+	}
 }
 
-const ignoreSelectors = ['.sign-area', '#background-audio', '#audio-toggle']
+const ignoreSelectors = [
+	'.bottom-pinata',
+	'.donate_offer',
+	'.donation-theme-widget-container',
+	'.tree',
+	'#background-audio',
+	'#audio-toggle',
+	'#open-cards-button',
+	'#call-button',
+	'p',
+]
 
-document.querySelectorAll('.container *').forEach(el => {
+document.querySelectorAll('.container-inner *').forEach(el => {
 	if (!el.closest('.orange') && !ignoreSelectors.some(sel => el.closest(sel))) {
-		el.addEventListener('mouseenter', () => grayAllExcept())
-		el.addEventListener('mouseleave', clearGray)
+		el.addEventListener('mouseenter', () => {
+			grayAllExcept()
+		})
+		el.addEventListener('mouseleave', () => {
+			clearGray()
+		})
 	}
 })
 
 oranges.forEach(orange => {
 	orange.addEventListener('mouseenter', () => grayAllExcept(orange))
 	orange.addEventListener('mouseleave', clearGray)
+})
+
+clearGray()
+
+// Genral scrolling restriction for 2,7,8 modals
+const modalIds = ['orange2-modal', 'orange7-modal', 'orange8-modal']
+
+const modals = modalIds.map(id => document.getElementById(id)).filter(Boolean)
+
+const checkScrollLock = () => {
+	const anyActive = modals.some(modal => modal.classList.contains('active'))
+	document.body.classList.toggle('no-scroll', anyActive)
+}
+
+const observer = new MutationObserver(checkScrollLock)
+
+modals.forEach(modal => {
+	observer.observe(modal, {
+		attributes: true,
+		attributeFilter: ['class'],
+	})
 })

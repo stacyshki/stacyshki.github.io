@@ -4,137 +4,162 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>С Днём Рождения нас!</title>
-		<link rel="stylesheet" href="styles.css" />
+		<link rel="stylesheet" href="styles.css?v=28" />
 		<link rel="icon" href="media/favicon.ico" class="icon" />
-		<link rel="preload" as="image" href="media/loading_bg.png" />
-		<script src="script.js" defer></script>
+		<link rel="preload" as="image" href="media/loading_cover.avif" />
+		<script src="jquery-3.7.1.min.js" defer></script>
+		<script src="script.js?v=28" defer></script>
 	</head>
 	<body>
 		<div class="loading-screen" id="loading-screen">
 			<div class="loading-content">
-				<p class="brand">ОНКОЛОГИКА</p>
+				<img src="media/logo-load-page.png" alt="ОНКОЛОГИКА" class="brand" />
 				<p class="cancer-warn">
-					Рак - не личная трагедия.<br />
-					Это задача, которую можно решить.
+					6 лет мы помогаем взрослым онкопациентам и их близким
 				</p>
 				<p class="brand-desc">
-					6 лет мы помогаем взрослым онкопациентам и их близким
+					Спасибо, что помогаете нам менять систему поддержки онкопациентов
 				</p>
 				<p class="wait">Секунду, подгружаем для вас важное...</p>
 				<span id="loading-percentage">0%</span>
 			</div>
 		</div>
 		<div class="container">
-			<img class="tree" src="media/main_page.svg" alt="Фон" />
-			<div class="orange" id="orange1" data-modal="orange1-modal">
-				<img src="media/orange.svg" alt="Апельсин 1" />
-			</div>
-			<div
-				class="orange"
-				id="orange2"
-				data-modal="orange2-modal"
-				data-tooltip="О фонде"
-			>
-				<img src="media/orange.svg" alt="Апельсин 2" />
-			</div>
-			<div class="orange" id="orange3" data-modal="orange3-modal">
-				<img src="media/orange.svg" alt="Апельсин 3" />
-			</div>
-			<div class="orange" id="orange4">
-				<img src="media/orange.svg" alt="Апельсин 4" />
-			</div>
-			<div class="orange" id="orange5">
-				<img src="media/orange.svg" alt="Апельсин 5" />
-			</div>
-			<div class="orange" id="orange6">
-				<img src="media/orange.svg" alt="Апельсин 6" />
-			</div>
-			<div
-				class="orange"
-				id="orange7"
-				data-modal="orange7-modal"
-				data-tooltip="Раскраска"
-			>
-				<img src="media/orange.svg" alt="Апельсин 7" />
-			</div>
-			<div
-				class="orange"
-				id="orange8"
-				data-modal="orange8-modal"
-				data-tooltip="Колесо добрых дел"
-			>
-				<img src="media/orange.svg" alt="Апельсин 8" />
-			</div>
-			<div class="orange" id="orange9" data-modal="orange9-modal">
-				<img src="media/orange.svg" alt="Апельсин 9" />
-			</div>
-			<div class="orange" id="orange10" data-modal="orange10-modal">
-				<img src="media/orange.svg" alt="Апельсин 10" />
-			</div>
+			<img class="tree" src="media/tree.avif" alt="Фон" />
+			<div class="container-inner">
+				<div class="orange" id="orange1" data-modal="orange1-modal">
+					<img src="media/orange.avif" alt="Апельсин 1" />
+				</div>
+				<div
+					class="orange"
+					id="orange2"
+					data-modal="orange2-modal"
+					data-tooltip="О фонде"
+				>
+					<img src="media/orange.avif" alt="Апельсин 2" />
+				</div>
+				<div class="orange" id="orange3" data-modal="orange3-modal">
+					<img src="media/orange.avif" alt="Апельсин 3" />
+				</div>
+				<div class="orange" id="orange4">
+					<img src="media/orange.avif" alt="Апельсин 4" />
+				</div>
+				<div class="orange" id="orange5">
+					<img src="media/orange.avif" alt="Апельсин 5" />
+				</div>
+				<div class="orange" id="orange6">
+					<img src="media/orange.avif" class="old-orange" alt="Апельсин 6" />
+					<img src="media/orange.avif" class="new-orange" alt="Апельсин 6" />
+				</div>
+				<div
+					class="orange"
+					id="orange7"
+					data-modal="orange7-modal"
+					data-tooltip="Раскраска"
+				>
+					<img src="media/orange.avif" alt="Апельсин 7" />
+				</div>
+				<div
+					class="orange"
+					id="orange8"
+					data-modal="orange8-modal"
+					data-tooltip="Колесо добрых дел"
+				>
+					<img src="media/orange.avif" alt="Апельсин 8" />
+				</div>
+				<div class="orange" id="orange9" data-modal="orange9-modal">
+					<img src="media/orange.avif" alt="Апельсин 9" />
+				</div>
+				<div class="orange" id="orange10" data-modal="orange10-modal">
+					<img src="media/orange.avif" alt="Апельсин 10" />
+				</div>
 
-			<div class="caterpillar">
-				<img src="media/caterpillar.svg" alt="Гусеница" />
-				<div class="caterpillar-modal">
-					<p>Привет! Как дела?<br />Если вдруг тебе нужна помощь, обращайся</p>
-					<button id="call-button">8 800 350 57 85</button>
+				<div class="caterpillar">
+					<img src="media/caterpillar.avif" alt="Гусеница" />
+					<div class="caterpillar-modal">
+						<div class="inner">
+							<p>
+								Привет! Как дела?<br />Если вдруг тебе нужна помощь, обращайся
+							</p>
+							<button class="texture-button" id="call-button">
+								8 800 350 57 85
+							</button>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="bird">
-				<img src="media/bird.svg" alt="Птичка" />
-				<div class="bird-modal">
-					<p>Привет, я отправляю добрые открытки тем, кому нужна поддержка.</p>
-					<button id="open-cards-button">Отправить открытку</button>
+				<div class="bird">
+					<img src="media/bird.avif" alt="Птичка" />
+					<div class="bird-modal">
+						<div class="inner">
+							<p>
+								Привет, я отправляю добрые открытки тем, кому нужна поддержка.
+							</p>
+							<button class="texture-button" id="open-cards-button">
+								Отправить открытку
+							</button>
+						</div>
+					</div>
 				</div>
+				<button id="help-button" aria-label="Help"></button>
+				<div class="pinata-area">
+					<img
+						class="pinata"
+						id="pinata"
+						src="media/pinata/pinata.png"
+						alt="Пиньята"
+						draggable="false"
+					/>
+					<canvas class="confetti" id="confetti"></canvas>
+				</div>
+				<audio id="background-audio" loop>
+					<source src="media/sound.mp3" type="audio/mpeg" />
+					<source src="media/sound.ogg" type="audio/ogg" />
+					Ваш браузер не поддерживает аудио.
+				</audio>
+				<button id="audio-toggle" aria-label="Toggle Sound"></button>
+				<div class="bottom-pinata"></div>
+				<h1 class="donate_offer">ПОДДЕРЖАТЬ<br />ОНКОПАЦИЕНТОВ</h1>
+				<div
+					class="donation-theme-widget-container"
+					data-id="0957635a-2b1d-4713-b27d-a0d56b7ff684"
+					data-theme="standard"
+				></div>
 			</div>
-			<button id="help-button" aria-label="Help"></button>
-			<div class="pinata-area">
-				<img
-					class="pinata"
-					id="pinata"
-					src="media/pinata.svg"
-					alt="Пиньята"
-					draggable="false"
-				/>
-				<canvas class="confetti" id="confetti"></canvas>
-			</div>
-			<div class="sign-area">
-				<img src="media/6yo_sign.svg" alt="Вывеска 6 лет" class="sixyo-sign" />
-			</div>
-			<audio id="background-audio" loop>
-				<source src="media/sound.mp3" type="audio/mpeg" />
-				<source src="media/sound.ogg" type="audio/ogg" />
-				Ваш браузер не поддерживает аудио.
-			</audio>
-			<button id="audio-toggle" aria-label="Toggle Sound"></button>
 		</div>
 		<div class="popup-backdrop" id="popup-backdrop" style="display: none">
 			<div class="popup">
-				<button id="close-popup-btn">
-					<img src="media/close-icon.svg" alt="Закрыть" />
-				</button>
-				<img class="popup-pinata" src="media/popup-pinata.svg" alt="Пиньята" />
-				<h2>Лови подарок!</h2>
-				<p></p>
+				<div class="inner">
+					<button id="close-popup-btn">
+						<img src="media/close-icon.png" alt="Закрыть" />
+					</button>
+					<img
+						class="popup-pinata"
+						src="media/pinata/popup-pinata.png"
+						alt="Пиньята"
+					/>
+					<h2>Лови подарок!</h2>
+					<p></p>
+				</div>
 			</div>
 		</div>
 		<div class="card-selection" id="card-selection" style="display: none">
 			<div class="card-selection-content">
 				<span class="close" id="close-card-selection">
-					<img src="media/close-icon.svg" alt="Закрыть" />
+					<img src="media/close-icon.png" alt="Закрыть" />
 				</span>
 				<h2>Выбери открытку</h2>
 				<div class="cards">
-					<div class="card" data-card="card.svg">
-						<img src="media/cards/card.svg" alt="Карточка 1" />
+					<div class="card" data-card="card.png">
+						<img src="media/cards/card.png" alt="Карточка 1" />
 					</div>
-					<div class="card" data-card="card_2.svg">
-						<img src="media/cards/card_2.svg" alt="Карточка 2" />
+					<div class="card" data-card="card_2.png">
+						<img src="media/cards/card_2.png" alt="Карточка 2" />
 					</div>
-					<div class="card" data-card="card_3.svg">
-						<img src="media/cards/card_3.svg" alt="Карточка 3" />
+					<div class="card" data-card="card_3.png">
+						<img src="media/cards/card_3.png" alt="Карточка 3" />
 					</div>
-					<div class="card" data-card="card_4.svg">
-						<img src="media/cards/card_4.svg" alt="Карточка 4" />
+					<div class="card" data-card="card_4.png">
+						<img src="media/cards/card_4.png" alt="Карточка 4" />
 					</div>
 				</div>
 				<p>Скачай открытку и отправь близкому человеку</p>
@@ -149,11 +174,15 @@
 		</div>
 		<!-- Modals orange -->
 		<div class="orange-modal" id="orange1-modal">
-			<h2>Уже собрали на помощь</h2>
-			<p>Вставить сюда iFrame</p>
-			<div class="buttons-wrapper">
-				<button class="team-help-button">Хочу помочь</button>
-				<button id="learn-more">Подробнее о сборе</button>
+			<div class="inner">
+				<h2>Уже собрали на помощь</h2>
+				<div class="donation-thermometer-container"></div>
+				<div class="buttons-wrapper">
+					<button class="team-help-button texture-button">Хочу помочь</button>
+					<button class="texture-button" id="learn-more">
+						Подробнее о сборе
+					</button>
+				</div>
 			</div>
 		</div>
 		<div
@@ -161,304 +190,374 @@
 			id="orange1-modal-more"
 			style="display: none"
 		>
-			<span id="close-orange1-modal-more">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
-			<h2>Каждый рубль — это шаг к возвращению к жизни</h2>
-			<p>
-				Мы собираем 6 000 000 рублей, чтобы помочь онкопациентам не просто
-				выжить, а вернуться к полноценной жизни после лечения.
-			</p>
+			<div class="inner">
+				<span id="close-orange1-modal-more">
+					<img src="media/close-icon.png" alt="Закрыть" />
+				</span>
+				<h2>Каждый рубль — это шаг к возвращению к жизни</h2>
+				<p>
+					Мы собираем 6 000 000 рублей, чтобы помочь как минимум 200
+					онкопациентов получили пакет самых востребованных видов помощи:
+				</p>
 
-			<h3>Средняя стоимость помощи</h3>
-			<p>
-				Один пациент часто нуждается в нескольких видах поддержки – например, в
-				реабилитации, продуктах и проезде.
-			</p>
-
-			<div class="cards-wrapper">
-				<div class="card-row">
-					<div class="card large-card">
-						<img src="media/icons/icon_rehab.png" alt="1" />
-						<p>Реабилитация после лечения</p>
-						<span>38 814 ₽</span>
+				<div class="cards-wrapper">
+					<div class="card">
+						<div class="card-bg">
+							<img src="media/icons/icon_house.avif" alt="2" />
+							<p>Проживание рядом с клиникой</p>
+							<span>11 380 ₽</span>
+						</div>
 					</div>
-					<div class="card large-card">
-						<img src="media/icons/icon_house.png" alt="2" />
-						<p>Проживание рядом с клиникой</p>
-						<span>11 380 ₽</span>
+					<div class="card">
+						<div class="card-bg">
+							<img src="media/icons/icon_airplane.avif" alt="3" />
+							<p>Проезд для лечения</p>
+							<span>11 100 ₽</span>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-bg">
+							<img src="media/icons/icon_busket.avif" alt="4" />
+							<p>Продуктовая помощь семье</p>
+							<span>4 000 ₽</span>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-bg">
+							<img src="media/icons/icon_tablet.avif" alt="5" />
+							<p>Второе мнение врача</p>
+							<span>3 500 ₽</span>
+						</div>
 					</div>
 				</div>
-				<div class="card-row">
-					<div class="card small-card">
-						<img src="media/icons/icon_airplane.png" alt="3" />
-						<p>Проезд для лечения</p>
-						<span>11 100 ₽</span>
-					</div>
-					<div class="card small-card">
-						<img src="media/icons/icon_airplane.png" alt="4" />
-						<p>Продуктовая помощь семье</p>
-						<span>4 000 ₽</span>
-					</div>
-					<div class="card small-card">
-						<img src="media/icons/icon_rehab.png" alt="5" />
-						<p>Второе мнение врача</p>
-						<span>3 500 ₽</span>
-					</div>
-				</div>
+				<h3>
+					Ваше пожертвование заполнит шкалу — и чью-то жизнь возможностями
+				</h3>
+				<div class="donation-thermometer-container"></div>
+				<button class="team-help-button-more texture-button">
+					Хочу помочь
+				</button>
 			</div>
-
-			<p>
-				6 миллионов — это не просто цифра. Это десятки людей, которые смогут не
-				только победить рак, но и вернуться к работе, семье, мечтам.
-			</p>
-
-			<h3>Почему важно собрать эту сумму?</h3>
-
-			<div class="text-cards-row">
-				<div class="text-card">
-					<h4>Реабилитация — это не роскошь, а необходимость</h4>
-					<p>Без неё даже успешное лечение может привести к инвалидности</p>
-				</div>
-				<div class="text-card">
-					<h4>Гибкость помощи</h4>
-					<p>
-						Кто-то нуждается только в консультации врача (3 500 ₽), а кому-то
-						критично оплатить и реабилитацию, и проезд. Мы помогаем всем
-					</p>
-				</div>
-				<div class="text-card">
-					<h4>Эффект «волны»</h4>
-					<p>Помощь одному человеку = поддержка всей его семьи</p>
-				</div>
-			</div>
-
-			<h3>Ваше пожертвование заполнит шкалу — и чью-то жизнь возможностями</h3>
-			<p>Вставить сюда iFrame</p>
-			<button class="team-help-button-more">Хочу помочь</button>
 		</div>
 
 		<div class="orange-modal" id="orange2-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть" />
-			</span>
-			<img src="media/team_photo.svg" alt="Наша команда" class="team-img" />
-			<h2>Мы создаём мир, в котором болеть раком — не страшно</h2>
-			<p>
-				Благотворительный фонд «Онкологика» оказывает всестороннюю поддержку и
-				навигацию взрослым онкопациентам и их близким. Его учредитель, Мирослава
-				Сергеенко, сама столкнулась с онкологическим диагнозом во взрослом
-				возрасте и на собственном опыте узнала, как тяжело пациентам и их семьям
-				оставаться один на один с болезнью. В 2017 году Мирослава начала
-				помогать другим, а сегодня «Онкологика» — это 15 направлений поддержки,
-				включая:
-			</p>
-			<img
-				src="media/team_about_help.png"
-				alt="Направления"
-				class="team-dir-img"
-			/>
-			<p>
-				Наша задача — быть рядом в момент растерянности и отчаяния, дать чёткие
-				инструкции и оказать помощь без промедлений. Потому что каждая минута на
-				счету, а ни один человек не должен оставаться с болезнью в одиночку.
-			</p>
-			<button class="team-help-button">Хочу помочь</button>
+			<div class="inner">
+				<span class="close-modal">
+					<img src="media/close-icon.png" alt="Закрыть" />
+				</span>
+				<div class="orange2-modal-content">
+					<div class="team-container team-container1">
+						<img
+							src="media/team_photo.png"
+							alt="Наша команда"
+							class="team-img"
+						/>
+					</div>
+					<h2 id="o2m-header">
+						«Онкологика»: создаем мир, где болеть раком больше не страшно.
+						Давайте вместе?
+					</h2>
+					<p>
+						Мы один из немногих в России фондов, который построил систему
+						поддержки взрослых людей с раком и их близких во всех регионах
+						страны.<br /><br />Каждый 30-й взрослый в нашей стране сталкивается
+						с онкозаболеванием. Среди них и основатель фонда Мирослава
+						Сергеенко. На личном опыте она узнала, как тяжело остаться
+						с болезнью один на один. Мирослава победила рак и в 2017 году начала
+						помогать другим.
+					</p>
+					<h2>Разве взрослых с онкодиагнозом не лечат по ОМС?</h2>
+					<p>
+						Лечение можно получить по ОМС. Однако помимо операций и курсов
+						терапии этот процесс требует много усилий и затрат.<br /><br />В
+						среднем один человек обращается к нам 7 раз на разных этапах
+						лечения, от диагностики до реабилитации.
+					</p>
+					<h2>«Онкологика» — это 20 видов поддержки. Мы рядом, когда:</h2>
+					<ul>
+						<li>
+							на обследования по ОМС очередь большая очередь или их не делают по
+							страховке,
+						</li>
+						<li>необходимо второе мнение врача, чтобы уточнить диагноз,</li>
+						<li>
+							на консультации и лечение приходится ездить в другой город,
+							а билеты и гостиницы непосильны для семейного бюджета,
+						</li>
+						<li>требуется спецпитание, продуктовые корзины, уходу на дому,</li>
+						<li>
+							нужна реабилитация, чтобы снова начать двигаться и говорить после
+							операции.
+						</li>
+					</ul>
+					<h2>Обычно все начинается со звонка</h2>
+					<p>
+						Операторы нашей горячей линии принимают больше 3000 звонков в
+						месяц.<br /><br />В момент растерянности и отчаяния мы рядом, чтобы
+						человек почувствовал уверенность и получил помощь без промедлений,
+						ведь каждая минута на счету.
+					</p>
+					<ul>
+						<li>
+							В фонде человек получает навигацию по системе здравоохранения,
+							ведь часто лечение проходит в разных организациях и городах.
+						</li>
+						<li>
+							Равные консультанты (люди с опытом рака) помогают составить план
+							действий и научиться жить с диагнозом.
+						</li>
+						<li>
+							У нас работает своя служба психологов и юристов, которые проводят
+							до 5000 бесплатных консультаций ежемесячно для людей с раком и их
+							близких.
+						</li>
+					</ul>
+					<h2>Помогаем людям с онкодиагнозом вернуться к жизни</h2>
+					<p>
+						Часто из-за диагноза люди становятся «невидимками»: оставляют
+						работу, привычный круг общения и активности. Человек может уйти в
+						изоляцию на месяцы, годы. И это страшно.<br /><br />В нашем фонде
+						действует сообщество для людей с онкодиагнозом и их близких. Это:
+					</p>
+					<ul>
+						<li>среда, где понимают друг друга с полуслова,</li>
+						<li>возможность поделиться переживаниями,</li>
+						<li>
+							новые впечатления и положительные эмоции, помогающие справиться с
+							долгим лечением.
+						</li>
+					</ul>
+					<p>
+						Каждый месяц мы проводим 30+ событий почти в 20 городах и онлайн.
+					</p>
+					<h2>Никто не должен оставаться с болезнью один на один</h2>
+					<div class="orange2-modal-content-btns">
+						<button class="team-help-button texture-button">Хочу помочь</button>
+						<a class="texture-button" href="https://oncologica.ru/needhelp/"
+							>Нужна помощь</a
+						>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="orange-modal" id="orange3-modal"></div>
+		<div class="orange-modal" id="orange3-modal">
+			<div class="inner">
+				<h2>Хочешь лимонад?</h2>
+				<p>
+					Приезжай в наш московский офис до 31 июня и забирай свою бутылку!<br /><br />Адрес:
+					ул. Шаболовка, 31 Б,3 подъезд, 6 этаж
+				</p>
+				<img class="bottle" src="media/lemonade.avif" alt="Лимонад" />
+			</div>
+		</div>
 		<div class="orange-modal" id="orange7-modal">
 			<div class="orange7-modal-content">
 				<span class="close-modal">
-					<img src="media/close-icon.svg" alt="Закрыть" />
+					<img src="media/close-icon.png" alt="Закрыть" />
 				</span>
 
 				<h2>Раскрась апельсин</h2>
 				<canvas id="orangeCanvas"></canvas>
+				<canvas id="orangeOverlay"></canvas>
 
 				<div class="palette">
 					<button class="color-btn" data-color="#FF5100" aria-label="Красный">
-						<img src="media/paint_game/paints_orange.png" alt="Оранжевый" />
+						<img src="media/paint_game/paints_orange.avif" alt="Оранжевый" />
 					</button>
 					<button class="color-btn" data-color="#0986EB" aria-label="Синий">
-						<img src="media/paint_game/paints_blue.png" alt="Синий" />
+						<img src="media/paint_game/paints_blue.avif" alt="Синий" />
 					</button>
 					<button class="color-btn" data-color="#02AA03" aria-label="Зеленый">
-						<img src="media/paint_game/paints_green.png" alt="Зеленый" />
+						<img src="media/paint_game/paints_green.avif" alt="Зеленый" />
 					</button>
 					<button
 						class="color-btn"
 						data-color="#924CD6"
 						aria-label="Фиолетовый"
 					>
-						<img src="media/paint_game/paints_purple.png" alt="Фиолетовый" />
+						<img src="media/paint_game/paints_purple.avif" alt="Фиолетовый" />
 					</button>
 					<button class="color-btn" data-color="#C8FF00" aria-label="Желтый">
-						<img src="media/paint_game/paints_lime.png" alt="Лайм" />
+						<img src="media/paint_game/paints_lime.avif" alt="Лайм" />
 					</button>
 					<button class="color-btn" data-color="#FF85C0" aria-label="Розовый">
-						<img src="media/paint_game/paints_pink.png" alt="Розовый" />
+						<img src="media/paint_game/paints_pink.avif" alt="Розовый" />
 					</button>
 				</div>
 
-				<button class="save-btn" onclick="saveDrawing()">Сохранить</button>
-				<button class="save-btn" onclick="clearCanvas()">Очистить</button>
+				<button
+					class="save-btn texture-button"
+					id="saveDrawing"
+					onclick="saveDrawing()"
+				>
+					Сохранить
+				</button>
+				<button
+					class="save-bt texture-button"
+					id="paintGameClear"
+					onclick="clearCanvas()"
+				>
+					Очистить
+				</button>
 			</div>
 		</div>
 		<div class="orange-modal" id="orange8-modal">
-			<span class="close-modal">
-				<img src="media/close-icon.svg" alt="Закрыть"
-			/></span>
-			<h2>Колесо добрых дел</h2>
+			<div class="inner">
+				<span class="close-modal">
+					<img src="media/close-icon.png" alt="Закрыть"
+				/></span>
+				<h2>Колесо добрых дел</h2>
 
-			<div id="resultText" class="result-text"></div>
+				<div id="resultText" class="result-text"></div>
 
-			<div class="wheel-wrapper">
-				<img id="wheel" src="media/wheel.png" alt="Колесо" />
-				<div class="pointer"></div>
-			</div>
-
-			<div class="center-button-wrapper">
-				<button id="spinBtn">Крутить</button>
-				<button id="openSharePopup" style="display: none">Поделиться</button>
-			</div>
-
-			<div id="sharePopup" class="share-popup hidden">
-				<div class="share-popup-content">
-					<button class="close-share">×</button>
-					<p>Поделиться в:</p>
-					<div class="share-buttons">
-						<a id="tgLink" target="_blank"
-							><img src="media/share-logos/telegram.svg" alt="Телеграм"
-						/></a>
-						<a id="vkLink" target="_blank"
-							><img src="media/share-logos/vk.svg" alt="ВКонтакте"
-						/></a>
-						<a id="waLink" target="_blank"
-							><img src="media/share-logos/whatsapp.svg" alt="Вотсап"
-						/></a>
+				<div class="wheel-wrapper">
+					<img id="wheel" src="media/wheel.png" alt="Колесо" />
+					<div class="pointer">
+						<img src="media/arrow_wheel.avif" alt="<--" />
 					</div>
+				</div>
+
+				<div class="center-button-wrapper">
+					<button class="texture-button" id="spinBtn">Крутить</button>
 				</div>
 			</div>
 		</div>
 		<div class="orange-modal" id="orange9-modal">
-			<h2>6 ярких событий от президента Фонда Мирославы Сергеенко</h2>
-			<div class="button-grid">
-				<img
-					src="media/vid-btns/button1.png"
-					class="video-btn"
-					data-index="0"
-					alt="Видео 1"
-				/>
-				<img
-					src="media/vid-btns/button2.png"
-					class="video-btn"
-					data-index="1"
-					alt="Видео 2"
-				/>
-				<img
-					src="media/vid-btns/button3.png"
-					class="video-btn"
-					data-index="2"
-					alt="Видео 3"
-				/>
-				<img
-					src="media/vid-btns/button4.png"
-					class="video-btn"
-					data-index="3"
-					alt="Видео 4"
-				/>
-				<img
-					src="media/vid-btns/button5.png"
-					class="video-btn"
-					data-index="4"
-					alt="Видео 5"
-				/>
-				<img
-					src="media/vid-btns/button6.png"
-					class="video-btn"
-					data-index="5"
-					alt="Видео 6"
-				/>
+			<div class="inner">
+				<h2>6 ярких событий от президента Фонда Мирославы Сергеенко</h2>
+				<div class="button-grid">
+					<img
+						src="media/vid-btns/button1.avif"
+						class="video-btn"
+						data-index="0"
+						alt="Видео 1"
+					/>
+					<img
+						src="media/vid-btns/button2.avif"
+						class="video-btn"
+						data-index="1"
+						alt="Видео 2"
+					/>
+					<img
+						src="media/vid-btns/button3.avif"
+						class="video-btn"
+						data-index="2"
+						alt="Видео 3"
+					/>
+					<img
+						src="media/vid-btns/button4.avif"
+						class="video-btn"
+						data-index="3"
+						alt="Видео 4"
+					/>
+					<img
+						src="media/vid-btns/button5.avif"
+						class="video-btn"
+						data-index="4"
+						alt="Видео 5"
+					/>
+					<img
+						src="media/vid-btns/button6.avif"
+						class="video-btn"
+						data-index="5"
+						alt="Видео 6"
+					/>
+					<img
+						src="media/vid-btns/button7.avif"
+						class="video-btn"
+						data-index="6"
+						alt="Видео 7"
+					/>
+				</div>
 			</div>
 		</div>
 		<div id="video-modal" class="video-modal hidden">
 			<span class="close-btn">
-				<img src="media/close-icon.svg" alt="Закрыть" />
+				<img src="media/close-icon.png" alt="Закрыть" />
 			</span>
 			<div class="carousel" id="carousel"></div>
 		</div>
 		<div class="orange-modal" id="orange10-modal">
-			<h2>Истории благополучателей</h2>
-			<div class="portraits-grid">
-				<img
-					src="media/portraits/portrait1.png"
-					class="portraits-grid__item"
-					data-id="1"
-					alt="Портрет 1"
-				/>
-				<img
-					src="media/portraits/portrait2.png"
-					class="portraits-grid__item"
-					data-id="2"
-					alt="Портрет 2"
-				/>
-				<img
-					src="media/portraits/portrait3.png"
-					class="portraits-grid__item"
-					data-id="3"
-					alt="Портрет 3"
-				/>
-				<img
-					src="media/portraits/portrait4.png"
-					class="portraits-grid__item"
-					data-id="4"
-					alt="Портрет 4"
-				/>
-				<img
-					src="media/portraits/portrait5.png"
-					class="portraits-grid__item"
-					data-id="5"
-					alt="Портрет 5"
-				/>
-				<img
-					src="media/portraits/portrait6.png"
-					class="portraits-grid__item"
-					data-id="6"
-					alt="Портрет 6"
-				/>
-				<img
-					src="media/portraits/portrait7.png"
-					class="portraits-grid__item"
-					data-id="7"
-					alt="Портрет 7"
-				/>
-				<img
-					src="media/portraits/portrait8.png"
-					class="portraits-grid__item"
-					data-id="8"
-					alt="Портрет 8"
-				/>
+			<div class="inner">
+				<h2>Истории благополучателей</h2>
+				<div class="portraits-grid">
+					<img
+						src="media/portraits/portrait1.png"
+						class="portraits-grid__item"
+						data-id="1"
+						alt="Портрет 1"
+					/>
+					<img
+						src="media/portraits/portrait2.png"
+						class="portraits-grid__item"
+						data-id="2"
+						alt="Портрет 2"
+					/>
+					<img
+						src="media/portraits/portrait3.png"
+						class="portraits-grid__item"
+						data-id="3"
+						alt="Портрет 3"
+					/>
+					<img
+						src="media/portraits/portrait4.png"
+						class="portraits-grid__item"
+						data-id="4"
+						alt="Портрет 4"
+					/>
+					<img
+						src="media/portraits/portrait5.png"
+						class="portraits-grid__item"
+						data-id="5"
+						alt="Портрет 5"
+					/>
+					<img
+						src="media/portraits/portrait6.png"
+						class="portraits-grid__item"
+						data-id="6"
+						alt="Портрет 6"
+					/>
+					<img
+						src="media/portraits/portrait7.png"
+						class="portraits-grid__item"
+						data-id="7"
+						alt="Портрет 7"
+					/>
+					<img
+						src="media/portraits/portrait8.png"
+						class="portraits-grid__item"
+						data-id="8"
+						alt="Портрет 8"
+					/>
+				</div>
 			</div>
 		</div>
 		<div class="portraits-modal" id="portraitsModal">
 			<div class="portraits-modal__content">
-				<button class="portraits-modal__close" aria-label="Закрыть"></button>
+				<div class="inner">
+					<button class="portraits-modal__close" aria-label="Закрыть"></button>
 
-				<div class="portraits-modal__photo-container">
-					<img src="" alt="" class="portraits-modal__image" />
-					<div class="portraits-modal__name"></div>
+					<div class="portraits-modal__photo-container">
+						<div class="portraits-modal__image-border">
+							<img src="" alt="" class="portraits-modal__image" />
+						</div>
+						<div class="portraits-modal__name"></div>
+					</div>
+
+					<div class="portraits-modal__text"></div>
 				</div>
-
-				<div class="portraits-modal__text"></div>
 			</div>
 		</div>
 
 		<!-- Preloading animations -->
 		<div style="display: none">
-			<img src="media/peeling/peel1.svg" alt="" />
-			<img src="media/peeling/peel2.svg" alt="" />
-			<img src="media/peeling/peel3.svg" alt="" />
-			<img src="media/hedgehog/hedgehog.svg" alt="" />
+			<img src="media/peeling/peel1.avif" alt="" />
+			<img src="media/peeling/peel2.avif" alt="" />
+			<img src="media/peeling/peel3.avif" alt="" />
+			<img src="media/peeling/peel4.avif" alt="" />
+			<img src="media/hedgehog/hedgehog.gif" alt="" />
 		</div>
+		<script src="https://pay.givr.ru/api/public/plugin/get_js_script/95945dbe-e1f8-4905-b5ac-6ea7327384c3"></script>
+		<script src="https://pay.givr.ru/api/public/plugin/get_thermometer/0957635a-2b1d-4713-b27d-a0d56b7ff684"></script>
 	</body>
 </html>

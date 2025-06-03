@@ -1,0 +1,28 @@
+name: Деплой в dev
+on:
+  push:
+    branches: ["master"]
+jobs:
+  build-test:
+    name: CICD branch protection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display pull request title
+        run: echo ${{ gitverse.event_name }}
+        
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Docker-compose up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_IP }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          username: ${{ secrets.SSH_USER }}
+          command_timeout: 20m
+          script: |
+            cd /apps/static;
+            git pull --rebase;
+            docker compose up -d --build front;
